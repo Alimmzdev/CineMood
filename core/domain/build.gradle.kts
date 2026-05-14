@@ -17,6 +17,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                api(libs.jetbrains.kotlinx.coroutines.core)
             }
         }
     }
