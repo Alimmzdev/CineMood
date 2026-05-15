@@ -7,7 +7,7 @@ import com.alimmzdev.cinemood_kmp.service.data.iranianmoviesapi.repository.Movie
 import com.alimmzdev.cinemood_kmp.service.domain.repository.MoviesRepository
 import org.koin.dsl.module
 
-val moviesApiModule = module {
+val iranianMoviesApiDataModule = module {
     single {
         HttpClientFactory.create()
     }
