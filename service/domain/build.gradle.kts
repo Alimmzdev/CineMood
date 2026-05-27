@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.androidLint)
 }
 
@@ -11,8 +11,8 @@ kotlin {
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
-    androidLibrary {
-        namespace = "com.alimmzdev.cinemood_kmp.service.domain"
+    android {
+        namespace = "tech.nullexdev.cinemood.service.domain"
         compileSdk = 36
         minSdk = 24
 

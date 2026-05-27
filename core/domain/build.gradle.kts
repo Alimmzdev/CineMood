@@ -1,18 +1,34 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.androidLint)
 }
 
 kotlin {
-    androidLibrary {
-        namespace = "com.alimmzdev.cinemood_kmp.core.domain"
-        compileSdk = 36
+    android {
+        namespace = "tech.nullexdev.cinemood.core.domain"
+        compileSdk = 37
         minSdk = 24
     }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+
+    jvm()
+
+    js {
+        browser()
+        binaries.executable()
+    }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        binaries.executable()
+    }
+
     sourceSets {
         commonMain {
             dependencies {

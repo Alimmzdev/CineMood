@@ -1,6 +1,8 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.androidLint)
 }
 
@@ -9,9 +11,9 @@ kotlin {
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
-    androidLibrary {
-        namespace = "com.alimmzdev.cinemood_kmp.core.data"
-        compileSdk = 36
+    android {
+        namespace = "tech.nullexdev.cinemood.core.data"
+        compileSdk = 37
         minSdk = 24
 
         withHostTestBuilder {
@@ -49,6 +51,19 @@ kotlin {
         binaries.framework {
             baseName = xcfName
         }
+    }
+
+    jvm()
+
+    js {
+        browser()
+        binaries.executable()
+    }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        binaries.executable()
     }
 
     sourceSets {
