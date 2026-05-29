@@ -42,16 +42,6 @@ android {
             isMinifyEnabled = false
         }
     }
-    sourceSets {
-        getByName("main") {
-            manifest.srcFile("kotlin/AndroidManifest.xml")
-            // The project keeps Android Kotlin sources under `androidApp/kotlin/` (non-standard).
-            // Ensure both Java and Kotlin compilation tasks include that directory.
-            java.srcDirs("kotlin")
-            kotlin.srcDirs("kotlin")
-            res.srcDirs("res")
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

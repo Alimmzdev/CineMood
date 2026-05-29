@@ -108,5 +108,9 @@ kotlin {
             }
         }
     }
+}
 
+dependencies {
+    "debugImplementation"(libs.chucker)
+    "releaseImplementation"(libs.chucker.no.op)
 }

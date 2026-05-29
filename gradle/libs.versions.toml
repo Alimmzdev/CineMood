@@ -16,6 +16,7 @@ kotlin = "2.3.21"
 kotlinx-coroutines = "1.10.2"
 kotlinxCoroutinesCore = "1.11.0"
 kotlinxSerializationJson = "1.9.0"
+chucker = "4.3.1"
 material3 = "1.10.0-alpha05"
 kotlinStdlib = "2.3.21"
 materialIconsExtended = "1.7.3"
@@ -59,6 +60,8 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+chucker-no-op = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 wrappers-browser = { module = "org.jetbrains.kotlin-wrappers:kotlin-browser", version.ref = "kotlin-wrappers" }
 
