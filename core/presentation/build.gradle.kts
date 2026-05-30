@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -12,12 +14,8 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "com.alimmzdev.cinemood.core.presentation"
-        compileSdk {
-            version = release(36) {
-                minorApiLevel = 1
-            }
-        }
+        namespace = "tech.nullexdev.cinemood.core.presentation"
+        compileSdk = 37
         minSdk = 24
 
         withHostTestBuilder {
@@ -38,12 +36,6 @@ kotlin {
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
     val xcfName = "core:presentationKit"
-
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
 
     iosArm64 {
         binaries.framework {
@@ -78,7 +70,15 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                api(projects.core.navigation)
+                api(projects.service.domain)
+                
                 implementation(libs.kotlin.stdlib)
+                api(libs.compose.runtime)
+                api(libs.compose.foundation)
+                api(libs.compose.material3)
+                api(libs.compose.ui)
+                api(libs.compose.uiToolingPreview)
                 api(libs.coil.compose)
                 api(libs.coil.network.ktor)
                 api(libs.compose.material.icons.extended)

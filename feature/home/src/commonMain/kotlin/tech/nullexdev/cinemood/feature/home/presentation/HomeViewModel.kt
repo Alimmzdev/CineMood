@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
 import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.service.domain.usecase.GetMoviesUseCase
+import tech.nullexdev.cinemood.core.navigation.Screen
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -14,6 +15,7 @@ class HomeViewModel(
     init {
         onAction(HomeUiAction.LoadMovies)
     }
+
     override fun onAction(action: HomeUiAction) {
         when (action) {
             HomeUiAction.LoadMovies -> loadMovies(page = 1, replaceMovies = true)
@@ -23,8 +25,11 @@ class HomeViewModel(
                     loadMovies(page = currentState.currentPage + 1, replaceMovies = false)
                 }
             }
+            HomeUiAction.SearchClicked -> navigateTo(Screen.Search)
+            HomeUiAction.FavoriteClicked -> navigateTo(Screen.Favorite)
         }
     }
+
     private fun loadMovies(page: Int, replaceMovies: Boolean) {
         viewModelScope.launch {
             updateState { copy(isLoading = true, errorMessage = null) }
@@ -42,6 +47,7 @@ class HomeViewModel(
                             )
                         }
                     }
+
                     is BaseResult.Error -> updateState {
                         copy(
                             isLoading = false,
@@ -51,5 +57,11 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+    private fun navigateTo(screen: Screen) {
+        // Navigation should be handled by AppViewModel or a dedicated Navigator.
+        // For now, this is a placeholder to keep the code compiling if side effects are not yet implemented.
+        // In a real app, you might update a 'navigation' state or emit a side effect.
     }
 }

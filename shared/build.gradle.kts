@@ -52,6 +52,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.domain)
             implementation(projects.core.navigation)
+            implementation(projects.core.presentation)
             implementation(projects.service.data.iranianMoviesApi)
             implementation(projects.service.domain)
             implementation(projects.feature.home)

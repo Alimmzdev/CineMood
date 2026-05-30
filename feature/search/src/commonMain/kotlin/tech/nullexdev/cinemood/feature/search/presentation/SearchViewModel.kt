@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
 import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.service.domain.usecase.SearchMoviesUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -11,20 +13,37 @@ class SearchViewModel(
 ) : MviViewModel<SearchUiState, SearchUiAction>(
     initialState = SearchUiState(),
 ) {
+    private var searchJob: Job? = null
+
     override fun onAction(action: SearchUiAction) {
         when (action) {
-            is SearchUiAction.QueryChanged -> updateState {
-                copy(query = action.query, errorMessage = null)
+            is SearchUiAction.QueryChanged -> {
+                updateState { copy(query = action.query, errorMessage = null) }
+                searchJob?.cancel()
+                if (action.query.trim().isNotEmpty()) {
+                    searchJob = viewModelScope.launch {
+                        delay(500)
+                        searchMovies()
+                    }
+                } else {
+                    updateState { copy(movies = emptyList(), hasSearched = false) }
+                }
             }
-            SearchUiAction.SearchSubmitted -> searchMovies()
-            SearchUiAction.ClearQuery -> updateState {
-                copy(
-                    query = "",
-                    movies = emptyList(),
-                    errorMessage = null,
-                    hasSearched = false,
-                    isLoading = false,
-                )
+            SearchUiAction.SearchSubmitted -> {
+                searchJob?.cancel()
+                searchMovies()
+            }
+            SearchUiAction.ClearQuery -> {
+                searchJob?.cancel()
+                updateState {
+                    copy(
+                        query = "",
+                        movies = emptyList(),
+                        errorMessage = null,
+                        hasSearched = false,
+                        isLoading = false,
+                    )
+                }
             }
         }
     }

@@ -9,8 +9,6 @@ class AppViewModel : MviViewModel<AppUiState, AppUiAction>(
     override fun onAction(action: AppUiAction) {
         when (action) {
             is AppUiAction.BottomNavSelected -> navigateTo(action.screen)
-            AppUiAction.SearchClicked -> navigateTo(Screen.Search)
-            AppUiAction.FavoriteClicked -> navigateTo(Screen.Favorite)
             is AppUiAction.ThemeModeChanged -> updateState { copy(themeMode = action.themeMode) }
         }
     }
