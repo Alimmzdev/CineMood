@@ -11,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 
 class ThemeState {
     enum class ThemeMode {
@@ -44,7 +45,25 @@ fun MyKMPAppTheme(
     content: @Composable () -> Unit
 ) {
     val darkTheme = themeState.isDarkTheme()
-    val colorScheme = if (darkTheme) darkColorScheme() else lightColorScheme()
+    val colorScheme = if (darkTheme) {
+        darkColorScheme(
+            primary = Color.Red,
+            onPrimary = Color.White,
+            primaryContainer = Color(0xFF8B0000),
+            onPrimaryContainer = Color.White,
+            secondary = Color(0xFFFFCDD2),
+            onSecondary = Color.Black
+        )
+    } else {
+        lightColorScheme(
+            primary = Color.Red,
+            onPrimary = Color.White,
+            primaryContainer = Color(0xFFFFEBEE),
+            onPrimaryContainer = Color(0xFFB71C1C),
+            secondary = Color(0xFFD32F2F),
+            onSecondary = Color.White
+        )
+    }
 
     CompositionLocalProvider(LocalThemeState provides themeState) {
         MaterialTheme(

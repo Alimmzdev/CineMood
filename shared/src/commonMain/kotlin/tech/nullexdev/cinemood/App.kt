@@ -21,7 +21,7 @@ import androidx.compose.material3.IconButtonShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -183,9 +183,10 @@ fun CMNavigationBar(
     currentScreen: Screen,
     onNavigate: (Screen) -> Unit,
 ) {
+    val primaryColor = MaterialTheme.colorScheme.primary
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = Color.Red,
+        contentColor = primaryColor,
         tonalElevation = 0.dp
     ) {
         NavigationBarItem(
@@ -193,14 +194,12 @@ fun CMNavigationBar(
             onClick = { onNavigate(Screen.Home) },
             label = { Text("Home") },
             icon = { Icon(Icons.Default.Home, contentDescription = "Navigation Home Icon") },
-            colors = NavigationBarItemColors(
-                selectedTextColor = Color.Red,
-                selectedIconColor = Color.Red,
-                selectedIndicatorColor = Color.Red.copy(alpha = 0.15f),
+            colors = NavigationBarItemDefaults.colors(
+                selectedTextColor = primaryColor,
+                selectedIconColor = primaryColor,
+                indicatorColor = primaryColor.copy(alpha = 0.15f),
                 unselectedIconColor = Color.Gray,
                 unselectedTextColor = Color.Gray,
-                disabledIconColor = Color.Gray.copy(alpha = 0.2f),
-                disabledTextColor = Color.Gray.copy(alpha = 0.2f)
             )
         )
         NavigationBarItem(
@@ -208,14 +207,12 @@ fun CMNavigationBar(
             onClick = { onNavigate(Screen.Search) },
             label = { Text("Search") },
             icon = { Icon(Icons.Default.Search, contentDescription = "Navigation Search Icon") },
-            colors = NavigationBarItemColors(
-                selectedTextColor = Color.Red,
-                selectedIconColor = Color.Red,
-                selectedIndicatorColor = Color.Red.copy(alpha = 0.15f),
+            colors = NavigationBarItemDefaults.colors(
+                selectedTextColor = primaryColor,
+                selectedIconColor = primaryColor,
+                indicatorColor = primaryColor.copy(alpha = 0.15f),
                 unselectedIconColor = Color.Gray,
                 unselectedTextColor = Color.Gray,
-                disabledIconColor = Color.Gray.copy(alpha = 0.2f),
-                disabledTextColor = Color.Gray.copy(alpha = 0.2f)
             )
         )
         NavigationBarItem(
@@ -223,14 +220,12 @@ fun CMNavigationBar(
             onClick = { onNavigate(Screen.Favorite) },
             label = { Text("Favorite") },
             icon = { Icon(Icons.Default.FavoriteBorder, contentDescription = "Navigation Favorite Icon") },
-            colors = NavigationBarItemColors(
-                selectedTextColor = Color.Red,
-                selectedIconColor = Color.Red,
-                selectedIndicatorColor = Color.Red.copy(alpha = 0.15f),
+            colors = NavigationBarItemDefaults.colors(
+                selectedTextColor = primaryColor,
+                selectedIconColor = primaryColor,
+                indicatorColor = primaryColor.copy(alpha = 0.15f),
                 unselectedIconColor = Color.Gray,
                 unselectedTextColor = Color.Gray,
-                disabledIconColor = Color.Gray.copy(alpha = 0.2f),
-                disabledTextColor = Color.Gray.copy(alpha = 0.2f)
             )
         )
         NavigationBarItem(
@@ -238,14 +233,12 @@ fun CMNavigationBar(
             onClick = { onNavigate(Screen.Settings) },
             label = { Text("Settings") },
             icon = { Icon(Icons.Default.Settings, contentDescription = "Navigation Settings Icon") },
-            colors = NavigationBarItemColors(
-                selectedTextColor = Color.Red,
-                selectedIconColor = Color.Red,
-                selectedIndicatorColor = Color.Red.copy(alpha = 0.15f),
+            colors = NavigationBarItemDefaults.colors(
+                selectedTextColor = primaryColor,
+                selectedIconColor = primaryColor,
+                indicatorColor = primaryColor.copy(alpha = 0.15f),
                 unselectedIconColor = Color.Gray,
                 unselectedTextColor = Color.Gray,
-                disabledIconColor = Color.Gray.copy(alpha = 0.2f),
-                disabledTextColor = Color.Gray.copy(alpha = 0.2f)
             )
         )
     }
