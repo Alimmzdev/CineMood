@@ -17,6 +17,13 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
+            export(projects.feature.home)
+            export(projects.feature.search)
+            export(projects.feature.favorite)
+            export(projects.feature.settings)
+            export(projects.service.domain)
+            export(projects.core.domain)
+            export(libs.jetbrains.kotlinx.coroutines.core)
         }
     }
 
@@ -50,16 +57,16 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.data)
-            implementation(projects.core.domain)
-            implementation(projects.core.navigation)
-            implementation(projects.core.presentation)
-            implementation(projects.service.data.iranianMoviesApi)
-            implementation(projects.service.domain)
-            implementation(projects.feature.home)
-            implementation(projects.feature.search)
-            implementation(projects.feature.favorite)
-            implementation(projects.feature.settings)
+            api(projects.core.data)
+            api(projects.core.domain)
+            api(projects.core.navigation)
+            api(projects.core.presentation)
+            api(projects.service.data.iranianMoviesApi)
+            api(projects.service.domain)
+            api(projects.feature.home)
+            api(projects.feature.search)
+            api(projects.feature.favorite)
+            api(projects.feature.settings)
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
