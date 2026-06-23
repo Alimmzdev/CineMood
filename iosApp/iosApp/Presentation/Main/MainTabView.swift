@@ -24,8 +24,9 @@ struct MainTabView: View {
                     HomeView(onMovieTapped: { movie in
                         openDetail(movieId: movie.id)
                     })
-                        .navigationTitle("Home")
-                        .navigationBarTitleDisplayMode(.large)
+                    // Home has its own "Discover" header — no system title.
+                    .navigationTitle("Discover")
+                    .navigationBarTitleDisplayMode(.large)
                 }
             }
 
