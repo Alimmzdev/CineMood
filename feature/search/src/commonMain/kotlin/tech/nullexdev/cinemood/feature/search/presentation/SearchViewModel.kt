@@ -2,7 +2,7 @@ package tech.nullexdev.cinemood.feature.search.presentation
 
 import androidx.lifecycle.viewModelScope
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviViewModel
+import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.service.domain.usecase.SearchMoviesUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

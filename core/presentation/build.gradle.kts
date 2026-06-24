@@ -72,8 +72,9 @@ kotlin {
             dependencies {
                 api(projects.core.navigation)
                 api(projects.service.domain)
-                
+
                 implementation(libs.kotlin.stdlib)
+                api(libs.jetbrains.kotlinx.coroutines.core)
                 api(libs.compose.runtime)
                 api(libs.compose.foundation)
                 api(libs.compose.material3)
@@ -82,6 +83,7 @@ kotlin {
                 api(libs.coil.compose)
                 api(libs.coil.network.ktor)
                 api(libs.compose.material.icons.extended)
+                implementation(libs.androidx.lifecycle.viewmodel)
             }
         }
 

@@ -1,7 +1,7 @@
 package tech.nullexdev.cinemood.feature.favorite.presentation
 
 import androidx.lifecycle.viewModelScope
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviViewModel
+import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.feature.favorite.presentation.model.FavoriteMovieItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -1,6 +1,6 @@
 package tech.nullexdev.cinemood.feature.home.presentation
 
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviUiState
+import tech.nullexdev.cinemood.core.presentation.mvi.MviUiState
 import tech.nullexdev.cinemood.service.domain.moodel.MovieDetail
 
 data class MovieDetailUiState(

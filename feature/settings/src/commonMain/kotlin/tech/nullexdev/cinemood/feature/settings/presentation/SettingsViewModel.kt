@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviViewModel
+import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.core.domain.repository.ThemeRepository
 
 class SettingsViewModel(

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import tech.nullexdev.cinemood.core.navigation.Screen
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviViewModel
+import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.core.domain.repository.ThemeRepository
 
 class AppViewModel(

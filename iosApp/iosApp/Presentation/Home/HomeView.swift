@@ -90,25 +90,20 @@ struct HomeView: View {
 
     @ViewBuilder
     private var carousel: some View {
-        ZStack(alignment: .bottom) {
-            TabView(selection: $carouselPage) {
-                ForEach(Array(featuredMovies.enumerated()), id: \.element.id) { index, movie in
-                    FeaturedCard(
-                        title: movie.title,
-                        posterPath: movie.poster
-                    ) {
-                        onMovieTapped(movie)
-                    }
-                    .tag(index)
+        TabView(selection: $carouselPage) {
+            ForEach(Array(featuredMovies.enumerated()), id: \.element.id) { index, movie in
+                FeaturedCard(
+                    title: movie.title,
+                    posterPath: movie.poster
+                ) {
+                    onMovieTapped(movie)
                 }
+                .padding(.horizontal, 16)
+                .tag(index)
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .frame(height: 260)
-            .padding(.horizontal, 16) // ← move padding HERE, outside TabView
-
-            PageIndicator(pageCount: featuredMovies.count, currentPage: carouselPage)
-                .padding(.bottom, 14)
         }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .frame(height: 260)
     }
 
     @State private var carouselPage: Int = 0

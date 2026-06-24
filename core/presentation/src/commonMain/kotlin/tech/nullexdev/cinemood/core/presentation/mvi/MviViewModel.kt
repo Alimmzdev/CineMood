@@ -1,4 +1,4 @@
-package tech.nullexdev.cinemood.core.domain.presentation.mvi
+package tech.nullexdev.cinemood.core.presentation.mvi
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,6 +1,6 @@
 package tech.nullexdev.cinemood.feature.home.presentation
 
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviUiAction
+import tech.nullexdev.cinemood.core.presentation.mvi.MviUiAction
 
 sealed interface MovieDetailUiAction : MviUiAction {
     data object LoadDetail : MovieDetailUiAction

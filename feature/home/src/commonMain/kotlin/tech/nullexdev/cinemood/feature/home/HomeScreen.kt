@@ -1,6 +1,8 @@
 package tech.nullexdev.cinemood.feature.home
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -136,7 +138,10 @@ fun HomeScreen(
                         // Featured Section
                         if (featuredMovies.isNotEmpty()) {
                             item {
-                                FeaturedCarousel(featuredMovies)
+                                FeaturedCarousel(
+                                    movies = featuredMovies,
+                                    onMovieClick = { onMovieClick(it) }
+                                )
                             }
                         }
 
@@ -221,9 +226,12 @@ fun HomeScreen(
 }
 
 @Composable
-fun FeaturedCarousel(movies: List<Movie>) {
+fun FeaturedCarousel(
+    movies: List<Movie>,
+    onMovieClick: (Movie) -> Unit = {},
+) {
     val pagerState = rememberPagerState(pageCount = { movies.size })
-    
+
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         HorizontalPager(
             state = pagerState,
@@ -235,7 +243,8 @@ fun FeaturedCarousel(movies: List<Movie>) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp),
+                    .height(220.dp)
+                    .clickable { onMovieClick(movie) },
                 shape = RoundedCornerShape(28.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
@@ -295,16 +304,20 @@ fun FeaturedCarousel(movies: List<Movie>) {
         ) {
             repeat(movies.size) { iteration ->
                 val isSelected = pagerState.currentPage == iteration
+                val indicatorWidth by animateDpAsState(
+                    targetValue = if (isSelected) 18.dp else 6.dp,
+                    animationSpec = tween(durationMillis = 250),
+                    label = "indicatorWidth"
+                )
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 3.dp)
                         .clip(CircleShape)
                         .background(
-                            if (isSelected) MaterialTheme.colorScheme.primary 
+                            if (isSelected) MaterialTheme.colorScheme.primary
                             else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
                         )
-                        .size(width = if (isSelected) 18.dp else 6.dp, height = 6.dp)
-                        .animateContentSize()
+                        .size(width = indicatorWidth, height = 6.dp)
                 )
             }
         }

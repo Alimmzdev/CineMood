@@ -1,6 +1,6 @@
 package tech.nullexdev.cinemood.feature.search.presentation
 
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviUiAction
+import tech.nullexdev.cinemood.core.presentation.mvi.MviUiAction
 
 sealed interface SearchUiAction : MviUiAction {
     data class QueryChanged(val query: String) : SearchUiAction

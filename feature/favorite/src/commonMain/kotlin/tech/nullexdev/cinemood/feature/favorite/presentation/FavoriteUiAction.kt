@@ -1,6 +1,6 @@
 package tech.nullexdev.cinemood.feature.favorite.presentation
 
-import tech.nullexdev.cinemood.core.domain.presentation.mvi.MviUiAction
+import tech.nullexdev.cinemood.core.presentation.mvi.MviUiAction
 import tech.nullexdev.cinemood.feature.favorite.presentation.model.FavoriteMovieItem
 
 sealed interface FavoriteUiAction : MviUiAction {

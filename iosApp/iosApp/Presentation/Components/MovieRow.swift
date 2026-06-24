@@ -186,11 +186,6 @@ struct FeaturedCard: View {
         }
         .frame(height: 260) // ← critical: give GeometryReader an explicit height
         .buttonStyle(.plain)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in isPressed = true }
-                .onEnded { _ in isPressed = false }
-        )
     }
 }
 

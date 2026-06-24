@@ -126,7 +126,6 @@ iOS-specific: `MainViewController.kt`, `util/KoinHelper.kt`.
 #### `core:domain` — pure Kotlin contracts
 `core/domain/src/commonMain/.../core/domain/`
 
-- `presentation/mvi/` — `MviViewModel<UiState, UiAction>`, `MviUiState`, `MviUiAction` (the base every feature extends)
 - `repository/` — `BaseRepository`, `ThemeRepository` (interface)
 - `entity/` — `Entity`, `DomainModel`, `ThemeMode`
 - `common/BaseResult.kt` — `Success` / `Error` sealed result used by repositories
@@ -152,6 +151,7 @@ iOS-specific: `MainViewController.kt`, `util/KoinHelper.kt`.
 #### `core:presentation` — shared UI kit
 `core/presentation/src/commonMain/.../core/presentation/`
 
+- `mvi/` — `MviViewModel<UiState, UiAction>`, `MviUiState`, `MviUiAction` (the base every feature extends)
 - `components/`
   - `MovieCard.kt`, `SharedMoviePoster.kt` (shared-element poster)
   - `CMNavigationBar.kt`, `CMNavigationRail.kt` (adaptive nav chrome)
@@ -200,7 +200,7 @@ Split by Clean Architecture layer:
 
 ## 5. Key patterns
 
-### MVI base (`core:domain`)
+### MVI base (`core:presentation`)
 ```kotlin
 abstract class MviViewModel<UiState : MviUiState, UiAction : MviUiAction>(
     initialState: UiState,
