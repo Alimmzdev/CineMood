@@ -88,12 +88,10 @@ fun MovieDetailScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     onBack: () -> Unit,
-) {
-    val viewModel: MovieDetailViewModel = koinViewModel(key = "movie_detail_$movieId") {
-        parametersOf(
-            movieId
-        )
+    viewModel: MovieDetailViewModel = koinViewModel(key = "movie_detail_$movieId") {
+        parametersOf(movieId)
     }
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = remember(movieId) { ScrollState(0) }
     val themeState = LocalThemeState.current
