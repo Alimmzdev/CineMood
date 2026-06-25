@@ -3,7 +3,6 @@ package tech.nullexdev.cinemood.feature.favorite
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
@@ -21,10 +20,11 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.compose.viewmodel.koinViewModel
 import tech.nullexdev.cinemood.core.presentation.components.MovieCard
 import tech.nullexdev.cinemood.feature.favorite.presentation.FavoriteViewModel
-import tech.nullexdev.cinemood.service.domain.moodel.Movie
+import tech.nullexdev.cinemood.service.domain.model.Movie
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -100,7 +100,7 @@ fun FavoriteScreen(
                                                 title = favorite.title,
                                                 poster = favorite.poster,
                                                 genres = favorite.genres,
-                                                images = emptyList()
+                                                images = persistentListOf<String>()
                                             )
                                             MovieCard(
                                                 movie = movie,

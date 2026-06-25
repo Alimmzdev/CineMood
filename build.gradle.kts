@@ -28,3 +28,14 @@ tasks.matching { task -> task.name == "kotlinWasmStoreYarnLock" }.configureEach 
         }
     }
 }
+
+subprojects {
+    plugins.withId("org.jetbrains.kotlin.plugin.compose") {
+        extensions.configure<org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension> {
+            stabilityConfigurationFiles.add(
+                rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
+            )
+            reportsDestination = layout.buildDirectory.dir("compose_compiler")
+        }
+    }
+}

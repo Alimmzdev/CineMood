@@ -1,9 +1,10 @@
-package tech.nullexdev.cinemood.service.domain.moodel
+package tech.nullexdev.cinemood.service.domain.model
 
+import kotlinx.collections.immutable.ImmutableList
 import tech.nullexdev.cinemood.core.domain.entity.DomainModel
 
 data class MoviesPage(
-    val movies: List<tech.nullexdev.cinemood.service.domain.moodel.Movie>,
+    val movies: ImmutableList<Movie>,
     val currentPage: Int,
     val perPage: Int,
     val pageCount: Int,

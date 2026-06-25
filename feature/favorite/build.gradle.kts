@@ -72,7 +72,9 @@ kotlin {
             dependencies {
                 implementation(projects.core.presentation)
                 implementation(projects.core.domain)
+
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.compose.runtime)
                 implementation(libs.compose.foundation)
                 implementation(libs.compose.material3)

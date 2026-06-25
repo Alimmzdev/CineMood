@@ -14,6 +14,7 @@ composeMultiplatform = "1.11.1"
 junit = "4.13.2"
 kotlin = "2.4.0"
 kotlinx-coroutines = "1.11.0"
+kotlinxCollectionsImmutable = "0.5.0"
 kotlinxCoroutinesCore = "1.11.0"
 kotlinxSerializationJson = "1.11.0"
 chucker = "4.3.1"
@@ -56,6 +57,7 @@ compose-material-icons-extended = { module = "org.jetbrains.compose.material:mat
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }

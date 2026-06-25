@@ -3,8 +3,8 @@ package tech.nullexdev.cinemood.service.data.iranianmoviesapi.repository
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
 import tech.nullexdev.cinemood.core.domain.common.toBaseResult
 import tech.nullexdev.cinemood.service.data.iranianmoviesapi.datasource.MoviesRemoteDataSource
-import tech.nullexdev.cinemood.service.domain.moodel.MovieDetail
-import tech.nullexdev.cinemood.service.domain.moodel.MoviesPage
+import tech.nullexdev.cinemood.service.domain.model.MovieDetail
+import tech.nullexdev.cinemood.service.domain.model.MoviesPage
 import tech.nullexdev.cinemood.service.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

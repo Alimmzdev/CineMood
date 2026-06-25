@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
-import tech.nullexdev.cinemood.service.domain.moodel.Movie
+import tech.nullexdev.cinemood.service.domain.model.Movie
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

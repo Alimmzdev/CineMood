@@ -1,7 +1,8 @@
 package tech.nullexdev.cinemood.service.data.iranianmoviesapi.dto
 
+import kotlinx.collections.immutable.toImmutableList
 import tech.nullexdev.cinemood.core.data.network.dto.DomainConvertible
-import tech.nullexdev.cinemood.service.domain.moodel.Movie
+import tech.nullexdev.cinemood.service.domain.model.Movie
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,7 +18,7 @@ data class MovieDto(
             id = id,
             title = title,
             poster = poster,
-            genres = genres,
-            images = images
+            genres = genres.toImmutableList(),
+            images = images.toImmutableList()
         )
 }

@@ -1,4 +1,4 @@
-package tech.nullexdev.cinemood.service.domain.moodel
+package tech.nullexdev.cinemood.service.domain.model
 
 import tech.nullexdev.cinemood.core.domain.entity.DomainModel
 

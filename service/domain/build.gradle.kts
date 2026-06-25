@@ -69,8 +69,7 @@ kotlin {
         commonMain {
             dependencies {
                 api(projects.core.domain)
-
-                implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.collections.immutable)
             }
         }
 

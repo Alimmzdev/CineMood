@@ -53,9 +53,8 @@ val navSerializationConfig = SavedStateConfiguration {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun App(
-    viewModel: AppViewModel = koinViewModel(),
-) {
+fun App() {
+    val viewModel: AppViewModel = koinViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val themeState = remember { ThemeState() }
     val backStack = rememberNavBackStack(

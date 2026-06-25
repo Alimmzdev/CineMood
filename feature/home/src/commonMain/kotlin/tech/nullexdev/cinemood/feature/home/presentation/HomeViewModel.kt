@@ -1,6 +1,7 @@
 package tech.nullexdev.cinemood.feature.home.presentation
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
 import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.service.domain.usecase.GetMoviesUseCase
@@ -40,7 +41,7 @@ class HomeViewModel(
                         updateState {
                             copy(
                                 isLoading = false,
-                                movies = if (replaceMovies) pageData.movies else movies + pageData.movies,
+                                movies = if (replaceMovies) pageData.movies else (movies + pageData.movies).toImmutableList(),
                                 currentPage = pageData.currentPage,
                                 hasNextPage = pageData.hasNextPage,
                                 errorMessage = null,

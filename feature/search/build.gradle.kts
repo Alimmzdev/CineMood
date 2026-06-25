@@ -74,6 +74,7 @@ kotlin {
                 implementation(projects.core.presentation)
                 implementation(projects.service.domain)
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.compose.runtime)
                 implementation(libs.compose.foundation)
                 implementation(libs.compose.material3)

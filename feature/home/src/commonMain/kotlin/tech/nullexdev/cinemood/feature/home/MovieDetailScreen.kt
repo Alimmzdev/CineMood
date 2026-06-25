@@ -76,7 +76,7 @@ import tech.nullexdev.cinemood.core.presentation.theme.LocalThemeState
 import tech.nullexdev.cinemood.feature.home.presentation.MovieDetailUiAction
 import tech.nullexdev.cinemood.feature.home.presentation.MovieDetailUiState
 import tech.nullexdev.cinemood.feature.home.presentation.MovieDetailViewModel
-import tech.nullexdev.cinemood.service.domain.moodel.MovieDetail
+import tech.nullexdev.cinemood.service.domain.model.MovieDetail
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -88,12 +88,12 @@ fun MovieDetailScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     onBack: () -> Unit,
-    viewModel: MovieDetailViewModel = koinViewModel(key = "movie_detail_$movieId") {
+) {
+    val viewModel: MovieDetailViewModel = koinViewModel(key = "movie_detail_$movieId") {
         parametersOf(
             movieId
         )
-    },
-) {
+    }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = remember(movieId) { ScrollState(0) }
     val themeState = LocalThemeState.current

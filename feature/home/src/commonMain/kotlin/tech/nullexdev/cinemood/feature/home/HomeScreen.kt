@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.viewmodel.koinViewModel
 import tech.nullexdev.cinemood.core.presentation.components.ErrorState
 import tech.nullexdev.cinemood.core.presentation.components.SharedMoviePosterDefaults
@@ -36,16 +38,16 @@ import tech.nullexdev.cinemood.core.presentation.components.rememberAnimatedPost
 import tech.nullexdev.cinemood.core.presentation.components.sharedMoviePosterModifier
 import tech.nullexdev.cinemood.feature.home.presentation.HomeUiAction
 import tech.nullexdev.cinemood.feature.home.presentation.HomeViewModel
-import tech.nullexdev.cinemood.service.domain.moodel.Movie
+import tech.nullexdev.cinemood.service.domain.model.Movie
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = koinViewModel(),
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
     onMovieClick: (Movie) -> Unit = {},
 ) {
+    val viewModel: HomeViewModel = koinViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -139,7 +141,7 @@ fun HomeScreen(
                         if (featuredMovies.isNotEmpty()) {
                             item {
                                 FeaturedCarousel(
-                                    movies = featuredMovies,
+                                    movies = featuredMovies.toImmutableList(),
                                     onMovieClick = { onMovieClick(it) }
                                 )
                             }
@@ -227,7 +229,7 @@ fun HomeScreen(
 
 @Composable
 fun FeaturedCarousel(
-    movies: List<Movie>,
+    movies: ImmutableList<Movie>,
     onMovieClick: (Movie) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(pageCount = { movies.size })

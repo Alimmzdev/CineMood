@@ -2,7 +2,7 @@ package tech.nullexdev.cinemood.service.data.iranianmoviesapi.dto
 
 import tech.nullexdev.cinemood.core.data.network.dto.DomainConvertible
 import tech.nullexdev.cinemood.service.data.iranianmoviesapi.util.MoviesApiUrlResolver
-import tech.nullexdev.cinemood.service.domain.moodel.MovieDetail
+import tech.nullexdev.cinemood.service.domain.model.MovieDetail
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

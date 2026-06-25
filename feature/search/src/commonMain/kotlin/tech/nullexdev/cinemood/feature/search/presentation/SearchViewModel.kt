@@ -1,12 +1,14 @@
 package tech.nullexdev.cinemood.feature.search.presentation
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.persistentListOf
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
 import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.service.domain.usecase.SearchMoviesUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class SearchViewModel(
     private val searchMoviesUseCase: SearchMoviesUseCase,
@@ -22,11 +24,11 @@ class SearchViewModel(
                 searchJob?.cancel()
                 if (action.query.trim().isNotEmpty()) {
                     searchJob = viewModelScope.launch {
-                        delay(500)
+                        delay(500.milliseconds)
                         searchMovies()
                     }
                 } else {
-                    updateState { copy(movies = emptyList(), hasSearched = false) }
+                    updateState { copy(movies = persistentListOf(), hasSearched = false) }
                 }
             }
             SearchUiAction.SearchSubmitted -> {
@@ -38,7 +40,7 @@ class SearchViewModel(
                 updateState {
                     copy(
                         query = "",
-                        movies = emptyList(),
+                        movies = persistentListOf(),
                         errorMessage = null,
                         hasSearched = false,
                         isLoading = false,

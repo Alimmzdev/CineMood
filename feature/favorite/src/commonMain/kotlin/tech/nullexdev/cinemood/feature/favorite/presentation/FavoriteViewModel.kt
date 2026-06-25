@@ -1,6 +1,7 @@
 package tech.nullexdev.cinemood.feature.favorite.presentation
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.persistentListOf
 import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.feature.favorite.presentation.model.FavoriteMovieItem
 import kotlinx.coroutines.delay
@@ -42,13 +43,13 @@ class FavoriteViewModel : MviViewModel<FavoriteUiState, FavoriteUiAction>(
                 id = 1,
                 title = "Inception",
                 poster = "https://image.tmdb.org/t/p/w500/9gk7Fn9sVAsS9Te6B1pU3O9sbUC.jpg",
-                genres = listOf("Action", "Sci-Fi")
+                genres = persistentListOf("Action", "Sci-Fi")
             ),
             FavoriteMovieItem(
                 id = 2,
                 title = "The Dark Knight",
                 poster = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg",
-                genres = listOf("Action", "Crime")
+                genres = persistentListOf("Action", "Crime")
             ),
         )
     }

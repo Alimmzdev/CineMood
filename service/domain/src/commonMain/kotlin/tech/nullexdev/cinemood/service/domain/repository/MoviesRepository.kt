@@ -2,8 +2,7 @@ package tech.nullexdev.cinemood.service.domain.repository
 
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
 import tech.nullexdev.cinemood.core.domain.repository.BaseRepository
-import tech.nullexdev.cinemood.service.domain.moodel.MovieDetail
-import tech.nullexdev.cinemood.service.domain.moodel.MoviesPage
+import tech.nullexdev.cinemood.service.domain.model.MovieDetail
 import kotlinx.coroutines.flow.Flow
 
 
@@ -19,7 +18,7 @@ interface MoviesRepository : BaseRepository {
      * @param page The page number to retrieve (1-indexed)
      * @return Flow emitting BaseResult with MoviesPage or Error
      */
-    fun getMovies(page: Int): Flow<BaseResult<tech.nullexdev.cinemood.service.domain.moodel.MoviesPage>>
+    fun getMovies(page: Int): Flow<BaseResult<tech.nullexdev.cinemood.service.domain.model.MoviesPage>>
 
     /**
      * Retrieves full details for a single movie by id.
@@ -51,5 +50,5 @@ interface MoviesRepository : BaseRepository {
      * }
      * ```
      */
-    fun searchMovies(query: String, page: Int = 1): Flow<BaseResult<tech.nullexdev.cinemood.service.domain.moodel.MoviesPage>>
+    fun searchMovies(query: String, page: Int = 1): Flow<BaseResult<tech.nullexdev.cinemood.service.domain.model.MoviesPage>>
 }

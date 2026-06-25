@@ -2,7 +2,7 @@ package tech.nullexdev.cinemood.service.domain.usecase
 
 import tech.nullexdev.cinemood.core.domain.common.BaseResult
 import tech.nullexdev.cinemood.core.domain.usecase.BaseUseCase
-import tech.nullexdev.cinemood.service.domain.moodel.MovieDetail
+import tech.nullexdev.cinemood.service.domain.model.MovieDetail
 import tech.nullexdev.cinemood.service.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 

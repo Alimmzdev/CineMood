@@ -74,6 +74,7 @@ kotlin {
                 api(projects.service.domain)
 
                 implementation(libs.kotlin.stdlib)
+                api(libs.kotlinx.collections.immutable)
                 api(libs.jetbrains.kotlinx.coroutines.core)
                 api(libs.compose.runtime)
                 api(libs.compose.foundation)

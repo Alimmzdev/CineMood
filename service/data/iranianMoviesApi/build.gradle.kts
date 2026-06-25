@@ -73,6 +73,7 @@ kotlin {
                 implementation(projects.service.domain)
 
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.kotlinx.serialization.json)
 
                 implementation(libs.koin.core)
