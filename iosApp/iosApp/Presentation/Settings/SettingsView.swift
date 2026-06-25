@@ -3,7 +3,6 @@ import Shared
 
 struct SettingsView: View {
     @StateObject private var wrapper = SettingsViewModelWrapper()
-    @Namespace private var themeAnimation
 
     var body: some View {
         ScrollView {
@@ -79,13 +78,6 @@ struct SettingsView: View {
     }
 
     // MARK: - Bindings
-
-    private var themeBinding: Binding<ThemeMode> {
-        Binding(
-            get: { wrapper.state.themeMode },
-            set: { wrapper.dispatch(SettingsUiActionThemeModeSelected(themeMode: $0)) }
-        )
-    }
 
     private var notificationsBinding: Binding<Bool> {
         Binding(

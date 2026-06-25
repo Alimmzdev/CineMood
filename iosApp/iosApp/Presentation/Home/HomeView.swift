@@ -90,20 +90,30 @@ struct HomeView: View {
 
     @ViewBuilder
     private var carousel: some View {
-        TabView(selection: $carouselPage) {
-            ForEach(Array(featuredMovies.enumerated()), id: \.element.id) { index, movie in
-                FeaturedCard(
-                    title: movie.title,
-                    posterPath: movie.poster
-                ) {
-                    onMovieTapped(movie)
+        VStack(spacing: 12) {
+            TabView(selection: $carouselPage) {
+                ForEach(Array(featuredMovies.enumerated()), id: \.element.id) { index, movie in
+                    FeaturedCard(
+                        title: movie.title,
+                        posterPath: movie.poster
+                    ) {
+                        onMovieTapped(movie)
+                    }
+                    .padding(.horizontal, 16)
+                    .tag(index)
                 }
-                .padding(.horizontal, 16)
-                .tag(index)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .frame(height: 260)
+
+            // Page indicator dots below the carousel.
+            if featuredMovies.count > 1 {
+                PageIndicator(
+                    pageCount: featuredMovies.count,
+                    currentPage: min(carouselPage, featuredMovies.count - 1)
+                )
             }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .frame(height: 260)
     }
 
     @State private var carouselPage: Int = 0
