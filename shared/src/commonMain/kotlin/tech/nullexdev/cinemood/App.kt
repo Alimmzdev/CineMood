@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +37,7 @@ import tech.nullexdev.cinemood.presentation.app.AppViewModel
 import tech.nullexdev.cinemood.core.presentation.components.SharedMoviePosterDefaults
 import tech.nullexdev.cinemood.navigation.movieDetailNavMetadata
 import tech.nullexdev.cinemood.navigation.sharedNavSizeTransform
-import tech.nullexdev.cinemood.theme.MyKMPAppTheme
+import tech.nullexdev.cinemood.theme.CineMoodTheme
 import tech.nullexdev.cinemood.theme.ThemeState
 
 val navSerializationConfig = SavedStateConfiguration {
@@ -71,7 +72,7 @@ fun App(
             backStack.add(uiState.currentScreen)
         }
     }
-    MyKMPAppTheme(themeState = themeState) {
+    CineMoodTheme(themeState = themeState) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val isHorizontal = maxWidth > maxHeight
 
@@ -119,7 +120,7 @@ fun App(
                                     if (scope.transition.targetState == EnterExitState.Visible) {
                                         SystemAppearance(
                                             isLight = !themeState.isDarkTheme(),
-                                            statusBarColor = androidx.compose.material3.MaterialTheme.colorScheme.surface
+                                            statusBarColor = MaterialTheme.colorScheme.surface
                                         )
                                     }
                                     HomeScreen(
@@ -142,7 +143,7 @@ fun App(
                                     if (scope.transition.targetState == EnterExitState.Visible) {
                                         SystemAppearance(
                                             isLight = !themeState.isDarkTheme(),
-                                            statusBarColor = androidx.compose.material3.MaterialTheme.colorScheme.surface
+                                            statusBarColor = MaterialTheme.colorScheme.surface
                                         )
                                     }
                                     SearchScreen(
@@ -165,7 +166,7 @@ fun App(
                                     if (scope.transition.targetState == EnterExitState.Visible) {
                                         SystemAppearance(
                                             isLight = !themeState.isDarkTheme(),
-                                            statusBarColor = androidx.compose.material3.MaterialTheme.colorScheme.surface
+                                            statusBarColor = MaterialTheme.colorScheme.surface
                                         )
                                     }
                                     FavoriteScreen(
@@ -188,7 +189,7 @@ fun App(
                                     if (scope.transition.targetState == EnterExitState.Visible) {
                                         SystemAppearance(
                                             isLight = !themeState.isDarkTheme(),
-                                            statusBarColor = androidx.compose.material3.MaterialTheme.colorScheme.surface
+                                            statusBarColor = MaterialTheme.colorScheme.surface
                                         )
                                     }
                                     SettingsScreen()
