@@ -23,12 +23,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.viewmodel.koinViewModel
 import tech.nullexdev.cinemood.core.presentation.components.ErrorState
@@ -37,6 +39,7 @@ import tech.nullexdev.cinemood.core.presentation.components.moviePosterKey
 import tech.nullexdev.cinemood.core.presentation.components.rememberAnimatedPosterCornerRadius
 import tech.nullexdev.cinemood.core.presentation.components.sharedMoviePosterModifier
 import tech.nullexdev.cinemood.feature.home.presentation.HomeUiAction
+import tech.nullexdev.cinemood.feature.home.presentation.HomeUiState
 import tech.nullexdev.cinemood.feature.home.presentation.HomeViewModel
 import tech.nullexdev.cinemood.service.domain.model.Movie
 
@@ -51,6 +54,26 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
+    HomeContent(
+        uiState = uiState,
+        scrollBehavior = scrollBehavior,
+        onMovieClick = onMovieClick,
+        onAction = viewModel::onAction,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun HomeContent(
+    uiState: HomeUiState,
+    scrollBehavior: TopAppBarScrollBehavior,
+    onMovieClick: (Movie) -> Unit,
+    onAction: (HomeUiAction) -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
+) {
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -60,7 +83,6 @@ fun HomeScreen(
                         Text(
                             "Discover",
                             fontWeight = FontWeight.Black,
-                            letterSpacing = (-1).sp,
                             fontSize = 34.sp
                         )
                         Text(
@@ -73,7 +95,7 @@ fun HomeScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { viewModel.onAction(HomeUiAction.SearchClicked) },
+                        onClick = { onAction(HomeUiAction.SearchClicked) },
                     ) {
                         Icon(Icons.Default.Search, contentDescription = "Search")
                     }
@@ -121,8 +143,8 @@ fun HomeScreen(
 
                 uiState.errorMessage != null && uiState.movies.isEmpty() -> {
                     ErrorState(
-                        message = uiState.errorMessage.orEmpty(),
-                        onRetry = { viewModel.onAction(HomeUiAction.Refresh) },
+                        message = uiState.errorMessage,
+                        onRetry = { onAction(HomeUiAction.Refresh) },
                         modifier = Modifier.align(Alignment.Center),
                     )
                 }
@@ -211,7 +233,7 @@ fun HomeScreen(
                                         CircularProgressIndicator(modifier = Modifier.size(32.dp))
                                     } else {
                                         Button(
-                                            onClick = { viewModel.onAction(HomeUiAction.LoadNextPage) },
+                                            onClick = { onAction(HomeUiAction.LoadNextPage) },
                                             shape = RoundedCornerShape(16.dp)
                                         ) {
                                             Text("Explore More")
@@ -411,6 +433,33 @@ fun VerticalMovieCard(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 4.dp)
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun HomeContentPreview() {
+    val movies = persistentListOf(
+        Movie(1, "Movie 1", "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg", persistentListOf("Action", "Drama"), persistentListOf()),
+        Movie(2, "Movie 2", "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg", persistentListOf("Comedy"), persistentListOf()),
+        Movie(3, "Movie 3", "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg", persistentListOf("Thriller"), persistentListOf()),
+        Movie(4, "Movie 4", "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg", persistentListOf("Sci-Fi"), persistentListOf()),
+        Movie(5, "Movie 5", "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg", persistentListOf("Horror"), persistentListOf()),
+        Movie(6, "Movie 6", "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg", persistentListOf("Romance"), persistentListOf())
+    )
+    val uiState = HomeUiState(
+        movies = movies,
+        isLoading = false,
+        hasNextPage = true
+    )
+    MaterialTheme {
+        HomeContent(
+            uiState = uiState,
+            scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(),
+            onMovieClick = {},
+            onAction = {}
         )
     }
 }
