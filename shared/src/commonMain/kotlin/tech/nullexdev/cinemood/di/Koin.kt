@@ -1,6 +1,7 @@
 package tech.nullexdev.cinemood.di
 
-import tech.nullexdev.cinemood.core.data.di.coreDataModule
+import tech.nullexdev.cinemood.service.data.local.di.localDataModule
+import tech.nullexdev.cinemood.service.domain.di.useCaseModule
 import tech.nullexdev.cinemood.feature.favorite.di.favoriteModule
 import tech.nullexdev.cinemood.feature.home.di.homeModule
 import tech.nullexdev.cinemood.feature.search.di.searchModule
@@ -14,6 +15,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import tech.nullexdev.cinemood.core.data.di.coreDataModule
 
 private val presentationModule = module {
     viewModelOf(::AppViewModel)
@@ -42,8 +44,10 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
         appDeclaration()
         modules(
             coreDataModule,
+            localDataModule,
             iranianMoviesApiDataModule,
             domainModule,
+            useCaseModule,
             presentationModule,
             homeModule,
             searchModule,

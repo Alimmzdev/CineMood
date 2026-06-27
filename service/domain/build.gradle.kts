@@ -69,6 +69,8 @@ kotlin {
         commonMain {
             dependencies {
                 api(projects.core.domain)
+                implementation(libs.koin.core)
+                api(libs.jetbrains.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.collections.immutable)
             }
         }

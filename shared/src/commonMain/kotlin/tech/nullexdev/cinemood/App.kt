@@ -181,6 +181,9 @@ fun App(
                                                     posterCornerRadiusDp = SharedMoviePosterDefaults.cardCornerRadius.value.toInt(),
                                                 )
                                             )
+                                        },
+                                        onNavigateToDiscover = {
+                                            viewModel.onAction(AppUiAction.BottomNavSelected(Screen.Home))
                                         }
                                     )
                                 }

@@ -12,5 +12,4 @@ expect fun platformModule(): Module
 val coreDataModule = module {
     includes(platformModule())
     single<ThemeRepository> { ThemeRepositoryImpl() }
-    single { CineMoodDatabase(get<DriverFactory>().createDriver()) }
 }

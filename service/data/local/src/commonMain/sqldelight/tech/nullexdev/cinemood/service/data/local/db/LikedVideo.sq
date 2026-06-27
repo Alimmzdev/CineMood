@@ -1,0 +1,19 @@
+CREATE TABLE LikedVideoEntity (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    posterUrl TEXT NOT NULL,
+    tmdbId INTEGER NOT NULL
+);
+
+insert:
+INSERT OR REPLACE INTO LikedVideoEntity(id, title, posterUrl, tmdbId)
+VALUES (?, ?, ?, ?);
+
+selectAll:
+SELECT * FROM LikedVideoEntity;
+
+selectById:
+SELECT * FROM LikedVideoEntity WHERE tmdbId = ?;
+
+deleteById:
+DELETE FROM LikedVideoEntity WHERE tmdbId = ?;

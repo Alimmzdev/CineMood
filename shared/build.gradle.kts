@@ -62,6 +62,7 @@ kotlin {
             api(projects.core.navigation)
             api(projects.core.presentation)
             api(projects.service.data.iranianMoviesApi)
+            api(projects.service.data.local)
             api(projects.service.domain)
             api(projects.feature.home)
             api(projects.feature.search)

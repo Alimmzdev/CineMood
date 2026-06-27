@@ -1,9 +1,9 @@
 package tech.nullexdev.cinemood.feature.favorite.di
 
-import tech.nullexdev.cinemood.feature.favorite.presentation.FavoriteViewModel
-import org.koin.core.module.dsl.viewModelOf
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import tech.nullexdev.cinemood.feature.favorite.presentation.viewmodel.FavoriteViewModel
 
 val favoriteModule = module {
-    viewModelOf(::FavoriteViewModel)
+    viewModel { FavoriteViewModel(get()) }
 }

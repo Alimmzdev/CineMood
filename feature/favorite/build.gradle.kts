@@ -71,7 +71,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.core.presentation)
-                implementation(projects.core.domain)
+                implementation(projects.service.domain)
 
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.collections.immutable)

@@ -23,18 +23,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.compose.viewmodel.koinViewModel
 import tech.nullexdev.cinemood.core.presentation.components.MovieCard
-import tech.nullexdev.cinemood.feature.favorite.presentation.FavoriteViewModel
+import tech.nullexdev.cinemood.feature.favorite.presentation.viewmodel.FavoriteViewModel
 import tech.nullexdev.cinemood.service.domain.model.Movie
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun FavoriteScreen(
     viewModel: FavoriteViewModel = koinViewModel(),
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
     onMovieClick: (Movie) -> Unit = {},
+    onNavigateToDiscover: () -> Unit = {},
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val likedVideos by viewModel.likedVideos.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
@@ -48,9 +49,9 @@ fun FavoriteScreen(
                             fontWeight = FontWeight.Black,
                             letterSpacing = (-1).sp,
                         )
-                        if (uiState.favorites.isNotEmpty()) {
+                        if (likedVideos.isNotEmpty()) {
                             Text(
-                                "${uiState.favorites.size} items saved",
+                                "${likedVideos.size} items saved",
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                             )
@@ -71,14 +72,8 @@ fun FavoriteScreen(
                 )
         ) {
             when {
-                uiState.isLoading && uiState.favorites.isEmpty() -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(strokeCap = androidx.compose.ui.graphics.StrokeCap.Round)
-                    }
-                }
-
-                uiState.favorites.isEmpty() -> {
-                    EmptyFavoritesState()
+                likedVideos.isEmpty() -> {
+                    EmptyFavoritesState(onNavigateToDiscover = onNavigateToDiscover)
                 }
 
                 else -> {
@@ -87,7 +82,7 @@ fun FavoriteScreen(
                         contentPadding = PaddingValues(16.dp, bottom = 32.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        uiState.favorites.chunked(2).forEach { rowMovies ->
+                        likedVideos.chunked(2).forEach { rowMovies ->
                             item {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -96,11 +91,11 @@ fun FavoriteScreen(
                                     rowMovies.forEach { favorite ->
                                         Box(modifier = Modifier.weight(1f)) {
                                             val movie = Movie(
-                                                id = favorite.id,
+                                                id = favorite.tmdbId,
                                                 title = favorite.title,
-                                                poster = favorite.poster,
-                                                genres = favorite.genres,
-                                                images = persistentListOf<String>()
+                                                poster = favorite.posterUrl,
+                                                genres = persistentListOf(),
+                                                images = persistentListOf()
                                             )
                                             MovieCard(
                                                 movie = movie,
@@ -124,7 +119,9 @@ fun FavoriteScreen(
 }
 
 @Composable
-private fun EmptyFavoritesState() {
+private fun EmptyFavoritesState(
+    onNavigateToDiscover: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -160,7 +157,7 @@ private fun EmptyFavoritesState() {
         )
         Spacer(Modifier.height(32.dp))
         Button(
-            onClick = { /* Navigate to Discover */ },
+            onClick = onNavigateToDiscover,
             shape = RoundedCornerShape(16.dp)
         ) {
             Text("Discover Movies")
