@@ -5,52 +5,53 @@ import kotlinx.collections.immutable.persistentListOf
 import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.feature.favorite.presentation.model.FavoriteMovieItem
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import tech.nullexdev.cinemood.service.domain.usecase.GetLikedVideosUseCase
 
-class FavoriteViewModel : MviViewModel<FavoriteUiState, FavoriteUiAction>(
+class FavoriteViewModel(
+    private val getLikedVideosUseCase: GetLikedVideosUseCase
+) : MviViewModel<FavoriteUiState, FavoriteUiAction>(
     initialState = FavoriteUiState(),
 ) {
     init {
         onAction(FavoriteUiAction.LoadFavorites)
     }
+
     override fun onAction(action: FavoriteUiAction) {
         when (action) {
             FavoriteUiAction.LoadFavorites, FavoriteUiAction.Refresh -> loadFavorites()
             is FavoriteUiAction.RemoveFavorite -> removeFavorite(action.movie)
         }
     }
+
     private fun loadFavorites() {
         viewModelScope.launch {
             updateState { copy(isLoading = true, errorMessage = null) }
-            delay(300)
-            updateState {
-                copy(
-                    isLoading = false,
-                    favorites = placeholderFavorites(),
-                    errorMessage = null,
-                )
-            }
+            getLikedVideosUseCase()
+                .catch { e ->
+                    updateState { copy(isLoading = false, errorMessage = e.message) }
+                }
+                .collect { likedVideos ->
+                    updateState {
+                        copy(
+                            isLoading = false,
+                            favorites = likedVideos.map { FavoriteMovieItem(
+                                id = it.id,
+                                title = it.title,
+                                poster = it.posterUrl,
+                                genres = persistentListOf()
+                            ) },
+                            errorMessage = null,
+                        )
+                    }
+                }
         }
     }
+
     private fun removeFavorite(movie: FavoriteMovieItem) {
         updateState {
             copy(favorites = favorites.filterNot { it.id == movie.id })
         }
-    }
-    private fun placeholderFavorites(): List<FavoriteMovieItem> {
-        return listOf(
-            FavoriteMovieItem(
-                id = 1,
-                title = "Inception",
-                poster = "https://image.tmdb.org/t/p/w500/9gk7Fn9sVAsS9Te6B1pU3O9sbUC.jpg",
-                genres = persistentListOf("Action", "Sci-Fi")
-            ),
-            FavoriteMovieItem(
-                id = 2,
-                title = "The Dark Knight",
-                poster = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDp92SMRYwT6C7R2R9V.jpg",
-                genres = persistentListOf("Action", "Crime")
-            ),
-        )
     }
 }

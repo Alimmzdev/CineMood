@@ -23,7 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.compose.viewmodel.koinViewModel
 import tech.nullexdev.cinemood.core.presentation.components.MovieCard
-import tech.nullexdev.cinemood.feature.favorite.presentation.viewmodel.FavoriteViewModel
+import tech.nullexdev.cinemood.feature.favorite.presentation.FavoriteViewModel
 import tech.nullexdev.cinemood.service.domain.model.Movie
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
@@ -35,7 +35,7 @@ fun FavoriteScreen(
     onMovieClick: (Movie) -> Unit = {},
     onNavigateToDiscover: () -> Unit = {},
 ) {
-    val likedVideos by viewModel.likedVideos.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
@@ -49,9 +49,9 @@ fun FavoriteScreen(
                             fontWeight = FontWeight.Black,
                             letterSpacing = (-1).sp,
                         )
-                        if (likedVideos.isNotEmpty()) {
+                        if (uiState.favorites.isNotEmpty()) {
                             Text(
-                                "${likedVideos.size} items saved",
+                                "${uiState.favorites.size} items saved",
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                             )
@@ -72,7 +72,7 @@ fun FavoriteScreen(
                 )
         ) {
             when {
-                likedVideos.isEmpty() -> {
+                uiState.favorites.isEmpty() -> {
                     EmptyFavoritesState(onNavigateToDiscover = onNavigateToDiscover)
                 }
 
@@ -82,7 +82,7 @@ fun FavoriteScreen(
                         contentPadding = PaddingValues(16.dp, bottom = 32.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        likedVideos.chunked(2).forEach { rowMovies ->
+                        uiState.favorites.chunked(2).forEach { rowMovies ->
                             item {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -91,9 +91,9 @@ fun FavoriteScreen(
                                     rowMovies.forEach { favorite ->
                                         Box(modifier = Modifier.weight(1f)) {
                                             val movie = Movie(
-                                                id = favorite.tmdbId,
+                                                id = favorite.id,
                                                 title = favorite.title,
-                                                poster = favorite.posterUrl,
+                                                poster = favorite.poster,
                                                 genres = persistentListOf(),
                                                 images = persistentListOf()
                                             )

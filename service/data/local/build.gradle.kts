@@ -49,18 +49,28 @@ kotlin {
         }
 
         androidMain {
+            dependsOn(commonMain.get())
             dependencies {
                 implementation(libs.androidx.room.runtime)
             }
         }
 
         iosMain {
+            dependsOn(commonMain.get())
             dependencies {
                 implementation(libs.sqldelight.ios.driver)
             }
         }
 
+        val iosArm64Main by getting {
+            dependsOn(iosMain.get())
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain.get())
+        }
+
         jvmMain {
+            dependsOn(commonMain.get())
             dependencies {
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)

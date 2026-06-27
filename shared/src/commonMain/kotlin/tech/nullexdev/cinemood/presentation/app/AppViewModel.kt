@@ -8,7 +8,7 @@ import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.core.domain.repository.ThemeRepository
 
 class AppViewModel(
-    private val themeRepository: ThemeRepository,
+    themeRepository: ThemeRepository,
 ) : MviViewModel<AppUiState, AppUiAction>(
     initialState = AppUiState(),
 ) {

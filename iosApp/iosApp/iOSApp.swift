@@ -3,11 +3,12 @@ import Shared
 
 @main
 struct iOSApp: App {
-    @StateObject private var appWrapper = AppViewModelWrapper()
 
     init() {
         MainViewControllerKt.startKoin()
     }
+
+    @StateObject private var appWrapper = AppViewModelWrapper()
 
     var body: some Scene {
         WindowGroup {
