@@ -52,6 +52,7 @@ kotlin {
             dependsOn(commonMain.get())
             dependencies {
                 implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.sqlite.bundled)
             }
         }
         
@@ -61,6 +62,17 @@ kotlin {
 
         val nativeMain by creating {
             dependsOn(roomMain)
+        }
+
+        val iosMain by creating {
+            dependsOn(nativeMain)
+        }
+
+        iosArm64Main {
+            dependsOn(iosMain)
+        }
+        iosSimulatorArm64Main {
+            dependsOn(iosMain)
         }
 
         jvmMain {
@@ -83,13 +95,6 @@ kotlin {
                 implementation(libs.sqldelight.web.worker.driver.wasm.js)
                 implementation(libs.wrappers.browser)
             }
-        }
-
-        getByName("iosArm64Main") {
-            dependsOn(nativeMain)
-        }
-        getByName("iosSimulatorArm64Main") {
-            dependsOn(nativeMain)
         }
     }
 }

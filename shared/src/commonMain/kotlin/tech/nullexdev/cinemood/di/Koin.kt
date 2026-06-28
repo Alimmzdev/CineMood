@@ -16,6 +16,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import tech.nullexdev.cinemood.core.data.di.coreDataModule
+import tech.nullexdev.cinemood.service.domain.usecase.GetLikedVideoUseCase
 
 private val presentationModule = module {
     viewModelOf(::AppViewModel)
@@ -34,6 +35,11 @@ private val domainModule = module {
     }
     factory<GetMovieDetailUseCase> {
         GetMovieDetailUseCase(
+            get()
+        )
+    }
+    factory<GetLikedVideoUseCase> {
+        GetLikedVideoUseCase(
             get()
         )
     }
