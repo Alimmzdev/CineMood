@@ -98,6 +98,18 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+
+        val iosMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        getByName("iosArm64Main") {
+            dependsOn(iosMain)
+        }
+
+        getByName("iosSimulatorArm64Main") {
+            dependsOn(iosMain)
+        }
     }
 }
 

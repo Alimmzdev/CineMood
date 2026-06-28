@@ -34,9 +34,10 @@ kotlin {
         val webMain by creating {
             dependsOn(commonMain.get())
             dependencies {
-                implementation(libs.sqldelight.web.worker.driver)
-                implementation(devNpm("sql.js", "1.12.0"))
+                implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
+                implementation(npm("sql.js", "1.14.1"))
                 implementation(libs.wrappers.browser)
+                implementation(libs.sqldelight.coroutines.extensions)
             }
         }
 
@@ -44,45 +45,51 @@ kotlin {
             dependencies {
                 implementation(project(":service:domain"))
                 implementation(libs.koin.core)
-                implementation(libs.sqldelight.coroutines.extensions)
             }
         }
 
-        androidMain {
+        val roomMain by creating {
             dependsOn(commonMain.get())
             dependencies {
                 implementation(libs.androidx.room.runtime)
             }
         }
-
-        iosMain {
-            dependsOn(commonMain.get())
-            dependencies {
-                implementation(libs.sqldelight.ios.driver)
-            }
+        
+        androidMain {
+            dependsOn(roomMain)
         }
 
-        val iosArm64Main by getting {
-            dependsOn(iosMain.get())
-        }
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain.get())
+        val nativeMain by creating {
+            dependsOn(roomMain)
         }
 
         jvmMain {
-            dependsOn(commonMain.get())
+            dependsOn(roomMain)
             dependencies {
-                implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
             }
         }
 
         jsMain {
             dependsOn(webMain)
+            dependencies {
+                implementation(libs.sqldelight.web.worker.driver)
+            }
         }
 
         wasmJsMain {
             dependsOn(webMain)
+            dependencies {
+                implementation(libs.sqldelight.web.worker.driver.wasm.js)
+                implementation(libs.wrappers.browser)
+            }
+        }
+
+        getByName("iosArm64Main") {
+            dependsOn(nativeMain)
+        }
+        getByName("iosSimulatorArm64Main") {
+            dependsOn(nativeMain)
         }
     }
 }
@@ -90,6 +97,8 @@ kotlin {
 dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspJvm", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }
 
 room {
