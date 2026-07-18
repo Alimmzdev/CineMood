@@ -4,13 +4,18 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +37,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
@@ -52,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -117,9 +124,19 @@ fun MovieDetailScreen(
                 movieTitle = displayTitle,
                 moviePoster = displayPoster,
                 posterCornerRadiusDp = posterCornerRadiusDp,
+                isLiked = uiState.isLiked,
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope,
                 onBack = onBack,
+                onToggleLike = {
+                    viewModel.onAction(
+                        MovieDetailUiAction.ToggleLike(
+                            movieId = movieId,
+                            title = displayTitle,
+                            posterUrl = displayPoster,
+                        )
+                    )
+                },
             )
             MovieDetailFadeSection(
                 uiState = uiState,
@@ -222,9 +239,11 @@ private fun MovieDetailHeroSection(
     movieTitle: String,
     moviePoster: String,
     posterCornerRadiusDp: Int,
+    isLiked: Boolean,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     onBack: () -> Unit,
+    onToggleLike: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -290,16 +309,32 @@ private fun MovieDetailHeroSection(
                 .align(Alignment.TopEnd),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            val interactionSource = remember { MutableInteractionSource() }
+            val isPressed by interactionSource.collectIsPressedAsState()
+            val scale by animateFloatAsState(
+                targetValue = if (isPressed) 0.85f else 1f,
+                animationSpec = spring(dampingRatio = 0.4f),
+                label = "like_scale",
+            )
+            val heartColor by animateColorAsState(
+                targetValue = if (isLiked) MaterialTheme.colorScheme.primary else Color.White,
+                animationSpec = tween(200),
+                label = "like_color",
+            )
             IconButton(
-                onClick = { },
+                onClick = onToggleLike,
+                interactionSource = interactionSource,
                 modifier = Modifier
+                    .size(44.dp)
+                    .graphicsLayer { scaleX = scale; scaleY = scale }
                     .clip(CircleShape)
                     .background(Color.Black.copy(alpha = 0.3f)),
             ) {
                 Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorite",
-                    tint = Color.White,
+                    imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = if (isLiked) "Unlike" else "Like",
+                    tint = heartColor,
+                    modifier = Modifier.size(22.dp),
                 )
             }
         }

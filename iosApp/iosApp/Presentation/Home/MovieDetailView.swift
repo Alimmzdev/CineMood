@@ -67,8 +67,20 @@ struct MovieDetailView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(detail.title)
-                    .font(.title2.bold())
+                HStack {
+                    Text(detail.title)
+                        .font(.title2.bold())
+                        .lineLimit(2)
+                    Spacer()
+                    LikeButton(isLiked: wrapper.state.isLiked) {
+                        let action = MovieDetailUiActionToggleLike(
+                            movieId: Int32(detail.id),
+                            title: detail.title,
+                            posterUrl: detail.poster
+                        )
+                        wrapper.dispatch(action)
+                    }
+                }
                 if !detail.year.isEmpty {
                     Text(detail.year)
                         .font(.subheadline)
@@ -105,6 +117,40 @@ struct MovieDetailView: View {
                 .font(.body)
                 .foregroundColor(.secondary)
         }
+    }
+}
+
+// MARK: - Like Button
+
+private struct LikeButton: View {
+    let isLiked: Bool
+    let action: () -> Void
+
+    @State private var animate = false
+
+    var body: some View {
+        Button(action: {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                animate = true
+            }
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            action()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                animate = false
+            }
+        }) {
+            Image(systemName: isLiked ? "heart.fill" : "heart")
+                .font(.system(size: 20))
+                .foregroundStyle(isLiked ? AppColors.primary : .secondary)
+                .frame(width: 40, height: 40)
+                .background(
+                    Circle()
+                        .fill(isLiked ? AppColors.primary.opacity(0.1) : Color(.tertiarySystemGroupedBackground))
+                )
+                .scaleEffect(animate ? 1.2 : 1.0)
+        }
+        .buttonStyle(.plain)
     }
 }
 

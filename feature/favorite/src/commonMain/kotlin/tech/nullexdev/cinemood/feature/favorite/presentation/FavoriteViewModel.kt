@@ -6,10 +6,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import tech.nullexdev.cinemood.core.presentation.mvi.MviViewModel
 import tech.nullexdev.cinemood.feature.favorite.presentation.model.FavoriteMovieItem
+import tech.nullexdev.cinemood.service.domain.usecase.DeleteLikedVideoUseCase
 import tech.nullexdev.cinemood.service.domain.usecase.GetLikedVideosUseCase
 
 class FavoriteViewModel(
-    private val getLikedVideosUseCase: GetLikedVideosUseCase
+    private val getLikedVideosUseCase: GetLikedVideosUseCase,
+    private val deleteLikedVideoUseCase: DeleteLikedVideoUseCase,
 ) : MviViewModel<FavoriteUiState, FavoriteUiAction>(
     initialState = FavoriteUiState(),
 ) {
@@ -49,8 +51,8 @@ class FavoriteViewModel(
     }
 
     private fun removeFavorite(movie: FavoriteMovieItem) {
-        updateState {
-            copy(favorites = favorites.filterNot { it.id == movie.id })
+        viewModelScope.launch {
+            deleteLikedVideoUseCase(movie.id)
         }
     }
 }

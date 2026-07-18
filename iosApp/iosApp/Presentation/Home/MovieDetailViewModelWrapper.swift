@@ -7,6 +7,7 @@ final class MovieDetailViewModelWrapper: ObservableObject {
     @Published var state: MovieDetailUiState = MovieDetailUiState(
         isLoading: false,
         movieDetail: nil,
+        isLiked: false,
         errorMessage: nil
     )
 

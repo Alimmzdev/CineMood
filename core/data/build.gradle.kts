@@ -74,19 +74,10 @@ kotlin {
             }
         }
 
-        val iosMain by creating {
-            dependsOn(commonMain.get())
+        iosMain {
             dependencies {
                 implementation(libs.ktor.client.darwin)
             }
-        }
-
-        getByName("iosArm64Main") {
-            dependsOn(iosMain)
-        }
-
-        getByName("iosSimulatorArm64Main") {
-            dependsOn(iosMain)
         }
 
         jvmMain {

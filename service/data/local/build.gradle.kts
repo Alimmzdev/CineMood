@@ -31,16 +31,6 @@ kotlin {
     }
 
     sourceSets {
-        val webMain by creating {
-            dependsOn(commonMain.get())
-            dependencies {
-                implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
-                implementation(npm("sql.js", "1.14.1"))
-                implementation(libs.wrappers.browser)
-                implementation(libs.sqldelight.coroutines.extensions)
-            }
-        }
-
         commonMain {
             dependencies {
                 implementation(project(":service:domain"))
@@ -64,15 +54,8 @@ kotlin {
             dependsOn(roomMain)
         }
 
-        val iosMain by creating {
+        iosMain {
             dependsOn(nativeMain)
-        }
-
-        iosArm64Main {
-            dependsOn(iosMain)
-        }
-        iosSimulatorArm64Main {
-            dependsOn(iosMain)
         }
 
         jvmMain {
@@ -83,17 +66,24 @@ kotlin {
         }
 
         jsMain {
-            dependsOn(webMain)
+            dependsOn(commonMain.get())
             dependencies {
+                implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
+                implementation(npm("sql.js", "1.14.1"))
+                implementation(libs.wrappers.browser)
+                implementation(libs.sqldelight.coroutines.extensions)
                 implementation(libs.sqldelight.web.worker.driver)
             }
         }
 
         wasmJsMain {
-            dependsOn(webMain)
+            dependsOn(commonMain.get())
             dependencies {
-                implementation(libs.sqldelight.web.worker.driver.wasm.js)
+                implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
+                implementation(npm("sql.js", "1.14.1"))
                 implementation(libs.wrappers.browser)
+                implementation(libs.sqldelight.coroutines.extensions)
+                implementation(libs.sqldelight.web.worker.driver.wasm.js)
             }
         }
     }
@@ -114,6 +104,7 @@ sqldelight {
     databases {
         create("CineMoodDatabase") {
             packageName.set("tech.nullexdev.cinemood.service.data.local.db")
+            generateAsync.set(true)
         }
     }
 }

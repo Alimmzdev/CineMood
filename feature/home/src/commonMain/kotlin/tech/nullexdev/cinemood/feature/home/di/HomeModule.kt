@@ -12,6 +12,9 @@ val homeModule = module {
         MovieDetailViewModel(
             movieId = parameters.get(),
             getMovieDetailUseCase = get(),
+            insertLikedVideoUseCase = get(),
+            deleteLikedVideoUseCase = get(),
+            getLikedVideoUseCase = get(),
         )
     }
 }

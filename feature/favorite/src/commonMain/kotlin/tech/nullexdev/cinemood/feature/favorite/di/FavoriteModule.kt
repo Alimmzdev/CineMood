@@ -7,7 +7,8 @@ import tech.nullexdev.cinemood.feature.favorite.presentation.FavoriteViewModel
 val favoriteModule = module {
     viewModel {
         FavoriteViewModel(
-            getLikedVideosUseCase = get()
+            getLikedVideosUseCase = get(),
+            deleteLikedVideoUseCase = get(),
         )
     }
 }
