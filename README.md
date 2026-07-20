@@ -58,9 +58,10 @@ Multi-module **Clean Architecture** with an **MVI** presentation pattern (`UiSta
    │      ▼  feature:home             │      │
    ├──► service:domain                │      │
    │      ▲                           │      │
-   │      └────service:data:iranianMoviesApi─
-   │                 │
-   └─────────────────┘  (HTTP client from core:data)
+   │      ├──service:data:iranianMoviesApi  │
+   │      └──service:data:local            │
+   │              (Room / SQLDelight)       │
+   └─────────────────────────────────────────┘
 ```
 
 ### Top-level structure
@@ -70,42 +71,46 @@ CineMookKmp/
 ├── androidApp/          # Android entry point (Compose Multiplatform)
 ├── iosApp/              # iOS entry point (Xcode + SwiftUI)
 │   └── iosApp/
-│       ├── iOSApp.swift                    # App entry point
-│       ├── Theme/AppColors.swift           # SwiftUI theme colors
+│       ├── iOSApp.swift                         # App entry point (theme propagation)
+│       ├── Theme/AppColors.swift                # SwiftUI theme colors
 │       └── Presentation/
-│           ├── Main/MainTabView.swift      # Tab-based navigation host
+│           ├── Main/MainTabView.swift           # Tab-based navigation host
+│           ├── App/
+│           │   └── AppViewModelWrapper.swift    # Root theme bridge (KMP → SwiftUI)
 │           ├── Home/
-│           │   ├── HomeView.swift          # Featured carousel + trending grid
+│           │   ├── HomeView.swift               # Featured carousel + trending grid
 │           │   ├── HomeViewModelWrapper.swift   # KMP → SwiftUI bridge
-│           │   └── MovieDetailView.swift  # Movie detail screen
+│           │   ├── MovieDetailView.swift        # Movie detail screen
+│           │   └── MovieDetailViewModelWrapper.swift
 │           ├── Search/
-│           │   ├── SearchView.swift        # Search with live results
+│           │   ├── SearchView.swift             # Search with live results
 │           │   └── SearchViewModelWrapper.swift
 │           ├── Favorite/
-│           │   ├── FavoriteView.swift      # Favorites list
+│           │   ├── FavoriteView.swift           # Favorites list
 │           │   └── FavoriteViewModelWrapper.swift
 │           ├── Settings/
-│           │   ├── SettingsView.swift      # Theme & preferences
+│           │   ├── SettingsView.swift           # Theme & preferences
 │           │   └── SettingsViewModelWrapper.swift
 │           └── Components/
-│               └── MovieRow.swift          # Shared SwiftUI components
+│               └── MovieRow.swift               # Shared SwiftUI components
 ├── desktopApp/          # Desktop (JVM) entry point (Compose)
 ├── webApp/              # Web entry point (JS + Wasm, Compose)
-├── shared/              # App shell: App(), navigation host, Koin init, theme
+├── shared/              # App shell: App(), AppViewModel, navigation host, Koin init, theme
 ├── core/                # Cross-cutting reusable layers
 │   ├── domain/          # MVI base, entities, repository interfaces, BaseResult
-│   ├── data/            # Ktor HttpClient, ThemeRepository, SQLDelight/Room DB
+│   ├── data/            # Ktor HttpClient, ThemeRepository (platform engines)
 │   ├── navigation/      # Screen routes (Navigation3 NavKey)
-│   └── presentation/    # Shared Compose UI components + theme
+│   └── presentation/    # MVI base, shared Compose UI components, theme
 ├── feature/             # Feature modules (screens + ViewModels + DI)
 │   ├── home/            # Movie list + Movie detail
 │   ├── search/          # Search with pagination
 │   ├── favorite/        # Favorites grid
 │   └── settings/        # Theme / app preferences
 ├── service/             # Backend-specific domain & data
-│   ├── domain/          # Movie models, use cases, MoviesRepository contract
+│   ├── domain/          # Movie models, use cases, repositories (movies + liked videos)
 │   └── data/
-│       └── iranianMoviesApi/   # Ktor client for moviesapi.ir
+│       ├── iranianMoviesApi/   # Ktor client for moviesapi.ir
+│       └── local/              # Local persistence (Room + SQLDelight)
 ├── build.gradle.kts     # Root build (plugin aliases, apply false)
 ├── settings.gradle.kts  # Module includes + repository config
 ├── gradle.properties    # Gradle / Kotlin / Android flags
@@ -118,14 +123,15 @@ CineMookKmp/
 | Module | Role |
 |--------|------|
 | `core/domain` | `BaseRepository`, `ThemeRepository`, entities (`Entity`, `DomainModel`, `ThemeMode`), `BaseResult`, `BaseUseCase`, `BaseException`, `CommonFlow` — **zero platform dependencies** |
-| `core/data` | Platform `HttpClient` (expect/actual engines), `ThemeRepository`, SQLDelight database (favorites schema), Room for native targets |
-| `core/presentation` | **MVI base** (`MviViewModel`, `MviUiState`, `MviUiAction`), reusable Compose UI components (`MovieCard`, `CMNavigationBar`, `SystemAppearance`), Material 3 theming |
+| `core/data` | Platform `HttpClient` (expect/actual engines), `ThemeRepository` |
+| `core/presentation` | **MVI base** (`MviViewModel`, `MviUiState`, `MviUiAction`), reusable Compose UI components (`MovieCard`, `CMNavigationBar`, `CMNavigationRail`, `CMTopAppBar`, `ErrorState`, `SharedMoviePoster`, `SystemAppearance`), Material 3 theming |
 | `core/navigation` | Typed `Screen` destinations (`NavKey`) for Navigation3 |
 | `feature/*` | Feature screens (Compose), ViewModels, and Koin modules — each follows the same MVI triad pattern |
-| `service/domain` | `GetMoviesUseCase`, `SearchMoviesUseCase`, domain models (`Movie`, `MovieDetail`) |
+| `service/domain` | Movie & liked-video models, use cases (`GetMoviesUseCase`, `SearchMoviesUseCase`, `GetLikedVideosUseCase`, `InsertLikedVideoUseCase`, `DeleteLikedVideoUseCase`), repository contracts |
 | `service/data:iranianMoviesApi` | Remote API integration with [moviesapi.ir](https://moviesapi.ir) — DTOs, mappers, Ktor client |
-| `shared` | Root `App()` composable, bottom bar / navigation rail, Koin `initKoin()`, shared-element transitions |
-| `iosApp` | **Native SwiftUI** layer consuming shared KMP ViewModels via `KoinHelper` / `Shared` framework |
+| `service/data:local` | Local persistence — Room (Android, iOS, JVM) and SQLDelight (JS, Wasm) for liked videos |
+| `shared` | Root `App()` composable, `AppViewModel` (theme + navigation), bottom bar / navigation rail, Koin `initKoin()`, shared-element transitions |
+| `iosApp` | **Native SwiftUI** layer consuming shared KMP ViewModels via `KoinHelper` / `Shared` framework, `AppViewModelWrapper` for system-wide theme propagation |
 
 ---
 
@@ -140,7 +146,7 @@ The iOS app uses **native SwiftUI** while sharing all business logic from KMP. T
 │       │ @StateObject wrapper                            │
 │       ▼                                                 │
 │  ViewModelWrapper (Swift)                               │
-│  HomeViewModelWrapper · SearchViewModelWrapper · ...     │
+│  AppViewModelWrapper · HomeViewModelWrapper · ...        │
 │       │ watches Kotlin StateFlow via FlowWatcher        │
 │       ▼                                                 │
 │  Shared Framework (Kotlin)                              │
@@ -155,7 +161,8 @@ The iOS app uses **native SwiftUI** while sharing all business logic from KMP. T
 **How it works:**
 1. **`KoinHelper.kt`** (Kotlin `iosMain`) exposes factory methods that resolve ViewModels from Koin DI
 2. **`ViewModelWrapper`** (Swift) creates the Kotlin ViewModel via `KoinHelper`, watches its `StateFlow` using `FlowWatcher`, and publishes state changes as `@Published` properties
-3. **SwiftUI views** use `@StateObject` to observe the wrapper and dispatch actions via `wrapper.dispatch(action)`
+3. **`AppViewModelWrapper`** (Swift) watches the shared `AppViewModel`'s `themeMode` state and applies it via `.preferredColorScheme(...)` at the app root
+4. **SwiftUI views** use `@StateObject` to observe the wrapper and dispatch actions via `wrapper.dispatch(action)`
 
 ---
 
@@ -195,9 +202,11 @@ The iOS app uses **native SwiftUI** while sharing all business logic from KMP. T
 - 🎞️ **Movie Detail** — Full detail view with poster, metadata, and cinematic gradient overlays
 - 🔍 **Search** — Live search with pagination and empty/error states
 - ❤️ **Favorites** — Saved-movies list with poster rows and empty state
+- 👍 **Like / Unlike** — Persist liked movies locally across all platforms (Room on Android/iOS/JVM, SQLDelight on Web)
 - ⚙️ **Settings** — Light / dark / system theme toggle
 - 📐 **Adaptive Layout** — Bottom navigation on portrait/narrow; navigation rail on wide screens (Compose targets)
-- 🌙 **Material 3 Theming** — Per-platform system bar styling with `SystemAppearance`
+- 🌙 **Material 3 Theming** — Per-platform system bar styling with `SystemAppearance` + iOS `preferredColorScheme`
+- ✨ **Shared Element Transitions** — Shared movie poster transitions between list and detail screens via `SharedTransitionLayout`
 - 🔄 **KMP → SwiftUI Bridge** — Shared ViewModels consumed by native SwiftUI through `FlowWatcher` + `@Published` pattern
 
 ---

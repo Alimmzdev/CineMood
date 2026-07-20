@@ -8,15 +8,12 @@ plugins {
 }
 
 kotlin {
-    // 1. Android Target Configuration
     android {
         namespace = "tech.nullexdev.cinemood.core.data"
         compileSdk = 37
         minSdk = 24
 
-        withHostTestBuilder {
-            // Configure host tests if needed
-        }
+        withHostTestBuilder {}
 
         withDeviceTestBuilder {
             sourceSetTreeName = "test"
@@ -62,7 +59,6 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.koin.core)
-
             }
         }
 
@@ -86,19 +82,16 @@ kotlin {
             }
         }
 
-        val webMain by creating {
-            dependsOn(commonMain.get())
+        jsMain {
             dependencies {
                 implementation("io.ktor:ktor-client-js:${libs.versions.ktor.get()}")
             }
         }
 
-        jsMain {
-            dependsOn(webMain)
-        }
-
         wasmJsMain {
-            dependsOn(webMain)
+            dependencies {
+                implementation("io.ktor:ktor-client-js:${libs.versions.ktor.get()}")
+            }
         }
     }
 }

@@ -9,24 +9,14 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
+import platform.Foundation.NSUserDomainMask
 import tech.nullexdev.cinemood.service.data.local.db.CineMookDatabase
 import tech.nullexdev.cinemood.service.data.local.db.CineMookDatabaseConstructor
 import tech.nullexdev.cinemood.service.data.local.LikedVideoDataSource
 import tech.nullexdev.cinemood.service.data.local.RoomLikedVideoDataSource
-import platform.Foundation.NSHomeDirectory
-import platform.Foundation.NSUserDomainMask
-import tech.nullexdev.cinemood.service.data.local.repository.LikedVideoRepositoryImpl
-import tech.nullexdev.cinemood.service.domain.repository.LikedVideoRepository
-
-actual fun platformModule(): Module = module {
-    single { getDatabase() }
-    single { get<CineMookDatabase>().likedVideoDao() }
-    single<LikedVideoDataSource> { RoomLikedVideoDataSource(get()) }
-    single<LikedVideoRepository> { LikedVideoRepositoryImpl(get()) }
-}
 
 @OptIn(ExperimentalForeignApi::class)
-fun getDatabase(): CineMookDatabase {
+private fun getDatabase(): CineMookDatabase {
     val dbFile = NSFileManager.defaultManager.URLForDirectory(
         directory = NSDocumentDirectory,
         inDomain = NSUserDomainMask,
@@ -42,4 +32,10 @@ fun getDatabase(): CineMookDatabase {
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
+}
+
+actual fun platformModule(): Module = module {
+    single { getDatabase() }
+    single { get<CineMookDatabase>().likedVideoDao() }
+    single<LikedVideoDataSource> { RoomLikedVideoDataSource(get()) }
 }

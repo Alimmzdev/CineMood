@@ -45,28 +45,20 @@ kotlin {
                 implementation(libs.androidx.sqlite.bundled)
             }
         }
-        
+
         androidMain {
             dependsOn(roomMain)
         }
 
-        val nativeMain by creating {
-            dependsOn(roomMain)
-        }
-
         iosMain {
-            dependsOn(nativeMain)
+            dependsOn(roomMain)
         }
 
         jvmMain {
             dependsOn(roomMain)
-            dependencies {
-                implementation(libs.androidx.sqlite.bundled)
-            }
         }
 
         jsMain {
-            dependsOn(commonMain.get())
             dependencies {
                 implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
                 implementation(npm("sql.js", "1.14.1"))
@@ -77,7 +69,6 @@ kotlin {
         }
 
         wasmJsMain {
-            dependsOn(commonMain.get())
             dependencies {
                 implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
                 implementation(npm("sql.js", "1.14.1"))
