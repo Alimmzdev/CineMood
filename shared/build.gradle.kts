@@ -16,6 +16,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
+            binaryOption("bundleId", "dev.alimmz.cinemood.shared")
             isStatic = true
             export(projects.feature.home)
             export(projects.feature.search)
@@ -39,7 +40,7 @@ kotlin {
     }
 
     android {
-        namespace = "tech.nullexdev.conemood_kmp"
+        namespace = "dev.alimmz.conemood_kmp"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

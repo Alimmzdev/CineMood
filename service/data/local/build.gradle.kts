@@ -10,8 +10,13 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        // Room's database constructor uses an expect object and generated actual objects.
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
     android {
-        namespace = "tech.nullexdev.cinemood.service.data.local"
+        namespace = "dev.alimmz.cinemood.service.data.local"
         compileSdk = 37
         minSdk = 24
     }
@@ -30,6 +35,8 @@ kotlin {
         binaries.executable()
     }
 
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
         commonMain {
             dependencies {
@@ -45,28 +52,20 @@ kotlin {
                 implementation(libs.androidx.sqlite.bundled)
             }
         }
-        
+
         androidMain {
             dependsOn(roomMain)
         }
 
-        val nativeMain by creating {
-            dependsOn(roomMain)
-        }
-
         iosMain {
-            dependsOn(nativeMain)
+            dependsOn(roomMain)
         }
 
         jvmMain {
             dependsOn(roomMain)
-            dependencies {
-                implementation(libs.androidx.sqlite.bundled)
-            }
         }
 
         jsMain {
-            dependsOn(commonMain.get())
             dependencies {
                 implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
                 implementation(npm("sql.js", "1.14.1"))
@@ -77,7 +76,6 @@ kotlin {
         }
 
         wasmJsMain {
-            dependsOn(commonMain.get())
             dependencies {
                 implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.3.2"))
                 implementation(npm("sql.js", "1.14.1"))
@@ -103,7 +101,7 @@ room {
 sqldelight {
     databases {
         create("CineMoodDatabase") {
-            packageName.set("tech.nullexdev.cinemood.service.data.local.db")
+            packageName.set("dev.alimmz.cinemood.service.data.local.db")
             generateAsync.set(true)
         }
     }

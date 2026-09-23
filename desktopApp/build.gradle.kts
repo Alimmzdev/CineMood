@@ -23,11 +23,11 @@ sourceSets {
 
 compose.desktop {
     application {
-        mainClass = "tech.nullexdev.cinemood.MainKt"
+        mainClass = "dev.alimmz.cinemood.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "tech.nullexdev.cinemood"
+            packageName = "dev.alimmz.cinemood"
             packageVersion = "1.0.0"
         }
     }

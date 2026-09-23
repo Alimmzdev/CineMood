@@ -12,7 +12,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "tech.nullexdev.cinemood.service.domain"
+        namespace = "dev.alimmz.cinemood.service.domain"
         compileSdk = 36
         minSdk = 24
 

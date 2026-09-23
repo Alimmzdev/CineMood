@@ -14,7 +14,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "tech.nullexdev.cinemood.feature.home"
+        namespace = "dev.alimmz.cinemood.feature.home"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

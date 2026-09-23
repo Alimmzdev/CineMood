@@ -1,277 +1,196 @@
 <div align="center">
 
-# 🎬 CineMood
+# CineMood
 
-**Discover movies by your mood**
+**A Kotlin Multiplatform movie discovery app with shared Kotlin logic, Compose Multiplatform, and native SwiftUI.**
 
-A **Kotlin Multiplatform (KMP)** movie browsing app for Iranian cinema — targeting Android, iOS, Desktop, and Web from a single shared codebase.
+An Android-focused portfolio project exploring how modular architecture, reactive state, and platform integrations work across mobile, desktop, and web.
 
-<br/>
+**Work in progress · Android · iOS · Desktop · Web**
 
-| Platform | UI Technology | Status |
-|:--------:|:-------------:|:------:|
-| Android | Compose Multiplatform | ✅ |
-| iOS | **Native SwiftUI** | ✅ |
-| Desktop (JVM) | Compose Multiplatform | ✅ |
-| Web (JS) | Compose Multiplatform | ✅ |
-| Web (Wasm) | Compose Multiplatform | ✅ |
-
-<br/>
-
-<img src="https://img.shields.io/badge/Kotlin-2.4.0-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin"/>
-<img src="https://img.shields.io/badge/SwiftUI-iOS_Native-FF6B35?style=for-the-badge&logo=swift&logoColor=white" alt="SwiftUI"/>
-<img src="https://img.shields.io/badge/Compose_Multiplatform-1.11.1-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" alt="Compose"/>
-<img src="https://img.shields.io/badge/Koin-4.2.1-6B4C9A?style=for-the-badge" alt="Koin"/>
-<img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"/>
+[Explore the code](#code-tour) · [Current features](#current-features) · [Run locally](#run-locally) · [Development status](#development-status)
 
 </div>
 
----
+## About the project
 
-## 📖 About
+CineMood lets users browse a movie catalog, search for titles, inspect movie details, and save favorites. Movie data comes from the `moviesapi.ir` service configured in the remote data module.
 
-CineMood is a **portfolio & learning project** built to push my boundaries as an Android developer:
+I am building this project as a practical sample of my Android and Kotlin engineering skills: organizing a growing codebase, separating business logic from UI, managing asynchronous state, and integrating platform-specific services. Android, desktop, and web share a Compose UI; iOS uses native SwiftUI backed by the same Kotlin ViewModels and use cases.
 
-- **Cross-platform mastery** — The shared Kotlin business logic (domain, data, presentation layers) powers **all five targets** through KMP, while the iOS app uses **native SwiftUI** consuming shared ViewModels via the `Shared` framework bridge.
-- **SwiftUI through Agentic AI Development** — As an Android developer, the entire iOS SwiftUI layer (views, navigation, theming, ViewModel wrappers) was built using **AI-assisted (agentic) development** to rapidly learn and apply SwiftUI patterns. This project serves as a practical exercise in **Agentic AI Development** — leveraging AI agents to write, iterate, and ship production-quality SwiftUI code while deepening my understanding of the Apple ecosystem.
-- **Clean Architecture** — Multi-module project with strict layer separation (domain → data → presentation), MVI pattern, and Koin DI — the same patterns I use in Android, now spanning platforms.
+The project is still under development. The sections below distinguish implemented behavior, compilation checks, and unfinished work so reviewers can assess the code as it stands.
 
-> 🎯 **Goal:** Improve my **agentic AI development skills** by using AI agents to build an unfamiliar platform (SwiftUI/iOS) while maintaining the architectural discipline of my Android roots.
+## Engineering highlights
 
----
+| Area | What the implementation demonstrates |
+| --- | --- |
+| **Modular architecture** | Separate feature, domain, data, and presentation modules. Repository contracts and use cases keep networking and database details out of feature ViewModels. |
+| **Unidirectional state** | A shared MVI base with explicit `UiAction` inputs, immutable `UiState` values, and `StateFlow` updates. Features model loading, success, empty, and error states. |
+| **Kotlin Multiplatform** | Shared models, use cases, repositories, and ViewModels, with `expect`/`actual` boundaries for HTTP engines, local database wiring, and system appearance. |
+| **Native iOS integration** | An exported Kotlin `Shared` framework, Koin-backed ViewModel resolution, and Swift wrappers that publish Kotlin flow updates to SwiftUI. |
+| **Data access** | Ktor requests, serialization, DTO-to-domain mapping, repository error handling, and reactive favorites storage behind a common data-source contract. |
+| **UI composition** | Reusable Compose components, typed Navigation3 destinations, adaptive navigation, and shared movie-poster transitions between catalog and detail views. |
+| **Build organization** | Gradle Kotlin DSL, a central version catalog, and source sets that share Room integration across Android, iOS, and JVM. |
 
-## 🏗️ Architecture
+## Current features
 
-Multi-module **Clean Architecture** with an **MVI** presentation pattern (`UiState` + `UiAction` → `MviViewModel`), wired together with **Koin** DI and **Navigation3**.
+- **Browse movies:** featured carousel, poster grid, catalog pagination, and loading/error states with retry behavior. The featured and “Trending Now” sections use the catalog response; they do not use a separate recommendation or trending API.
+- **Movie details:** poster, synopsis, available metadata, and a like/unlike action connected to the local data layer.
+- **Search:** query-based API search with a 500 ms delay after typing, explicit submit/clear actions, and loading, empty, and error states. The current screen displays one results page.
+- **Favorites:** database-backed likes and a reactive saved-movie list. Room implementations are present for Android, iOS, and desktop; browser storage integration is still being completed.
+- **Appearance:** light, dark, and system theme selection, propagated through Compose and the SwiftUI app root. The preference is currently held in memory.
+- **Navigation and motion:** bottom navigation or a navigation rail on Compose targets, shared poster transitions, and native SwiftUI tab navigation.
+- **iOS genre filtering:** filters the currently loaded catalog. Compose genre chips currently update their selected appearance only.
 
-```
- androidApp   iosApp   desktopApp   webApp
-      │          │         │           │
-      └──────────┴────┬────┴───────────┘
-                    shared
-   ┌─────────────────┼───────────────────────┐
-   ▼                 ▼                       ▼
- core:data      core:domain             core:navigation
- core:presentation                      core:presentation
-   │                                         │
-   │      ┌──────── feature:* ────────┐      │
-   │      ▼  feature:home             │      │
-   ├──► service:domain                │      │
-   │      ▲                           │      │
-   │      └────service:data:iranianMoviesApi─
-   │                 │
-   └─────────────────┘  (HTTP client from core:data)
-```
+## Architecture
 
-### Top-level structure
+The diagram shows the main runtime flow. The platform apps initialize dependencies, while shared feature ViewModels coordinate use cases and repositories.
 
-```
-CineMookKmp/
-├── androidApp/          # Android entry point (Compose Multiplatform)
-├── iosApp/              # iOS entry point (Xcode + SwiftUI)
-│   └── iosApp/
-│       ├── iOSApp.swift                    # App entry point
-│       ├── Theme/AppColors.swift           # SwiftUI theme colors
-│       └── Presentation/
-│           ├── Main/MainTabView.swift      # Tab-based navigation host
-│           ├── Home/
-│           │   ├── HomeView.swift          # Featured carousel + trending grid
-│           │   ├── HomeViewModelWrapper.swift   # KMP → SwiftUI bridge
-│           │   └── MovieDetailView.swift  # Movie detail screen
-│           ├── Search/
-│           │   ├── SearchView.swift        # Search with live results
-│           │   └── SearchViewModelWrapper.swift
-│           ├── Favorite/
-│           │   ├── FavoriteView.swift      # Favorites list
-│           │   └── FavoriteViewModelWrapper.swift
-│           ├── Settings/
-│           │   ├── SettingsView.swift      # Theme & preferences
-│           │   └── SettingsViewModelWrapper.swift
-│           └── Components/
-│               └── MovieRow.swift          # Shared SwiftUI components
-├── desktopApp/          # Desktop (JVM) entry point (Compose)
-├── webApp/              # Web entry point (JS + Wasm, Compose)
-├── shared/              # App shell: App(), navigation host, Koin init, theme
-├── core/                # Cross-cutting reusable layers
-│   ├── domain/          # MVI base, entities, repository interfaces, BaseResult
-│   ├── data/            # Ktor HttpClient, ThemeRepository, SQLDelight/Room DB
-│   ├── navigation/      # Screen routes (Navigation3 NavKey)
-│   └── presentation/    # Shared Compose UI components + theme
-├── feature/             # Feature modules (screens + ViewModels + DI)
-│   ├── home/            # Movie list + Movie detail
-│   ├── search/          # Search with pagination
-│   ├── favorite/        # Favorites grid
-│   └── settings/        # Theme / app preferences
-├── service/             # Backend-specific domain & data
-│   ├── domain/          # Movie models, use cases, MoviesRepository contract
-│   └── data/
-│       └── iranianMoviesApi/   # Ktor client for moviesapi.ir
-├── build.gradle.kts     # Root build (plugin aliases, apply false)
-├── settings.gradle.kts  # Module includes + repository config
-├── gradle.properties    # Gradle / Kotlin / Android flags
-└── gradle/
-    └── libs.versions.toml   # Centralized version catalog
+```mermaid
+flowchart TD
+    Compose["Compose UI: Android / Desktop / Web"] --> VM["Shared Kotlin feature ViewModels"]
+    SwiftUI["Native SwiftUI"] --> Bridge["Swift ObservableObject wrappers"]
+    Bridge --> VM
+    VM --> UseCases["Domain use cases"]
+    UseCases --> Contracts["Repository contracts"]
+    Contracts --> Remote["Remote repository: Ktor + DTO mapping"]
+    Contracts --> Local["Local repository: common data-source contract"]
+    Remote --> API["Movie API"]
+    Local --> Room["Room: Android / iOS / JVM"]
+    Local --> SQLDelight["SQLDelight: browser integration in progress"]
 ```
 
-### Module responsibilities
+| Module | Responsibility |
+| --- | --- |
+| `androidApp`, `desktopApp`, `webApp` | Platform entry points for the shared Compose application. |
+| `iosApp` | Native SwiftUI screens, navigation, and observable ViewModel wrappers. |
+| `shared` | App composition, Koin initialization, navigation host, theme coordination, and iOS framework exports. |
+| `feature/home`, `search`, `favorite`, `settings` | Feature UI, state, actions, ViewModels, and dependency definitions. |
+| `core/domain` | Shared contracts, result types, theme model, and flow-watching utility. |
+| `core/data` | HTTP client configuration, platform engines, and theme repository implementation. |
+| `core/presentation`, `core/navigation` | MVI base, reusable Compose components, appearance integration, and typed routes. |
+| `service/domain` | Movie and favorite models, repository contracts, and use cases. |
+| `service/data/iranianMoviesApi` | Remote data source, response DTOs, mapping, and movie repository implementation. |
+| `service/data/local` | Favorites data source, Room entities/DAO, SQLDelight queries, and platform database setup. |
 
-| Module | Role |
-|--------|------|
-| `core/domain` | `BaseRepository`, `ThemeRepository`, entities (`Entity`, `DomainModel`, `ThemeMode`), `BaseResult`, `BaseUseCase`, `BaseException`, `CommonFlow` — **zero platform dependencies** |
-| `core/data` | Platform `HttpClient` (expect/actual engines), `ThemeRepository`, SQLDelight database (favorites schema), Room for native targets |
-| `core/presentation` | **MVI base** (`MviViewModel`, `MviUiState`, `MviUiAction`), reusable Compose UI components (`MovieCard`, `CMNavigationBar`, `SystemAppearance`), Material 3 theming |
-| `core/navigation` | Typed `Screen` destinations (`NavKey`) for Navigation3 |
-| `feature/*` | Feature screens (Compose), ViewModels, and Koin modules — each follows the same MVI triad pattern |
-| `service/domain` | `GetMoviesUseCase`, `SearchMoviesUseCase`, domain models (`Movie`, `MovieDetail`) |
-| `service/data:iranianMoviesApi` | Remote API integration with [moviesapi.ir](https://moviesapi.ir) — DTOs, mappers, Ktor client |
-| `shared` | Root `App()` composable, bottom bar / navigation rail, Koin `initKoin()`, shared-element transitions |
-| `iosApp` | **Native SwiftUI** layer consuming shared KMP ViewModels via `KoinHelper` / `Shared` framework |
+### Sharing state with SwiftUI
 
----
+The iOS app starts Koin and resolves Kotlin ViewModels through `KoinHelper`. Each Swift `ObservableObject` wrapper watches the ViewModel's `StateFlow` using `FlowWatcher`, publishes state through `@Published`, and forwards user actions to Kotlin. Wrappers stop their flow watcher when deinitialized.
 
-## 🤖 KMP → SwiftUI Bridge
+This keeps feature state and data access shared while allowing iOS to use SwiftUI views and native navigation. It also makes the boundary explicit: Swift wrappers adapt state for the UI, and Kotlin ViewModels own feature behavior.
 
-The iOS app uses **native SwiftUI** while sharing all business logic from KMP. The bridge pattern:
+## Code tour
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  SwiftUI View Layer (Swift)                             │
-│  HomeView · SearchView · FavoriteView · SettingsView     │
-│       │ @StateObject wrapper                            │
-│       ▼                                                 │
-│  ViewModelWrapper (Swift)                               │
-│  HomeViewModelWrapper · SearchViewModelWrapper · ...     │
-│       │ watches Kotlin StateFlow via FlowWatcher        │
-│       ▼                                                 │
-│  Shared Framework (Kotlin)                              │
-│  MviViewModel<UiState, UiAction>  ← shared with Android │
-│       │                                                 │
-│       ▼                                                 │
-│  KoinHelper (Kotlin iosMain)                             │
-│  Resolves ViewModels → consumed from Swift               │
-└─────────────────────────────────────────────────────────┘
-```
+These are useful starting points for a source review:
 
-**How it works:**
-1. **`KoinHelper.kt`** (Kotlin `iosMain`) exposes factory methods that resolve ViewModels from Koin DI
-2. **`ViewModelWrapper`** (Swift) creates the Kotlin ViewModel via `KoinHelper`, watches its `StateFlow` using `FlowWatcher`, and publishes state changes as `@Published` properties
-3. **SwiftUI views** use `@StateObject` to observe the wrapper and dispatch actions via `wrapper.dispatch(action)`
+| Start here | What to look for |
+| --- | --- |
+| [MviViewModel](core/presentation/src/commonMain/kotlin/dev/alimmz/cinemood/core/presentation/mvi/MviViewModel.kt) | The small state/action abstraction used by feature ViewModels. |
+| [HomeViewModel](feature/home/src/commonMain/kotlin/dev/alimmz/cinemood/feature/home/presentation/HomeViewModel.kt) | Catalog loading, pagination, and state reduction around use-case results. |
+| [SearchViewModel](feature/search/src/commonMain/kotlin/dev/alimmz/cinemood/feature/search/presentation/SearchViewModel.kt) | Delayed query handling and explicit search states. |
+| [MoviesRepositoryImpl](service/data/iranianMoviesApi/src/commonMain/kotlin/dev/alimmz/cinemood/service/data/iranianmoviesapi/repository/MoviesRepositoryImpl.kt) | Remote data mapping and error translation at the repository boundary. |
+| [Local data module](service/data/local) | A common favorites contract with Room and SQLDelight implementations. |
+| [HomeViewModelWrapper.swift](iosApp/iosApp/Presentation/Home/HomeViewModelWrapper.swift) and [KoinHelper](shared/src/iosMain/kotlin/dev/alimmz/cinemood/util/KoinHelper.kt) | The Kotlin-to-SwiftUI state and dependency bridge. |
+| [App.kt](shared/src/commonMain/kotlin/dev/alimmz/cinemood/App.kt) | App-level navigation, adaptive layout, and shared-transition composition. |
 
----
+## Technology
 
-## 🛠️ Tech Stack
+Versions below reflect the repository's [Gradle version catalog](gradle/libs.versions.toml).
 
-### Shared Kotlin Layer
+| Purpose | Technology |
+| --- | --- |
+| Shared language | Kotlin 2.4.10 |
+| Shared UI | Compose Multiplatform 1.11.1, Material 3 |
+| iOS UI | SwiftUI |
+| State and concurrency | Coroutines 1.11.0, Flow, AndroidX Lifecycle |
+| Dependency injection | Koin 4.2.2 |
+| Navigation | Navigation3 1.1.1 on Compose; SwiftUI navigation on iOS |
+| Networking | Ktor 3.5.0, kotlinx.serialization 1.11.0 |
+| HTTP engines | OkHttp on Android, Darwin on iOS, Java on JVM, JS for web |
+| Local data | Room 2.8.4, SQLite, SQLDelight 2.3.2 |
+| Images | Coil 3.4.0 on Compose; AsyncImage on SwiftUI |
+| Build | Gradle 9.6.0, Android Gradle Plugin 9.1.1, KSP |
 
-| Category | Library / Version |
-|----------|-------------------|
-| Language | Kotlin **2.4.0** |
-| UI (Android/Desktop/Web) | Compose Multiplatform **1.11.1** · Material 3 |
-| Architecture | MVI (`UiState` / `UiAction` + `MviViewModel`) |
-| DI | Koin **4.2.1** (`koin-compose`, `koin-compose-viewmodel`) |
-| Navigation | Navigation3 **1.1.1** (`navigation3-ui`) |
-| Networking | Ktor **3.5.0** · Kotlinx Serialization **1.11.0** |
-| Images (Compose) | Coil 3 **3.4.0** (`coil-compose`, `coil-network-ktor3`) |
-| Local data | SQLDelight **2.3.2** · AndroidX Room **2.8.4** |
-| Async | Kotlin Coroutines **1.11.0** · Flow |
-| Lifecycle | AndroidX Lifecycle **2.10.0** (`collectAsStateWithLifecycle`) |
+## Development status
 
-### iOS Native Layer
+Latest local compilation checks were performed on **September 24, 2026**. These are source compilation results, not release or end-to-end runtime certification.
 
-| Category | Technology |
-|----------|-----------|
-| UI | **SwiftUI** (native) |
-| Navigation | `NavigationStack` + `TabView` |
-| Images | `AsyncImage` (built-in) |
-| Theme | Custom `AppColors` + Material-style gradients |
-| State | `@StateObject` / `@Published` / `FlowWatcher` |
-| Bridge | `Shared` KMP framework via `KoinHelper` |
+| Target | UI | Latest local check |
+| --- | --- | --- |
+| Android | Compose Multiplatform | Debug Kotlin compilation passed. |
+| Desktop JVM | Compose Multiplatform | Kotlin compilation passed. |
+| Web JavaScript | Compose Multiplatform | Kotlin compilation passed; browser database behavior still needs validation. |
+| iOS Simulator ARM64 | Native SwiftUI + shared Kotlin | Shared Kotlin compilation passed; this check did not build or run the SwiftUI app in Xcode. |
+| Web WebAssembly | Compose Multiplatform | Compilation blocked by worker-type and suspend-call errors in the local database module. |
 
----
+The repository currently contains starter/example tests. Meaningful ViewModel, repository, persistence, and UI coverage remains to be added.
 
-## ✨ Features
+### Next steps
 
-- 🏠 **Home** — Featured movie carousel with page indicators + trending grid with genre filter chips
-- 🎞️ **Movie Detail** — Full detail view with poster, metadata, and cinematic gradient overlays
-- 🔍 **Search** — Live search with pagination and empty/error states
-- ❤️ **Favorites** — Saved-movies list with poster rows and empty state
-- ⚙️ **Settings** — Light / dark / system theme toggle
-- 📐 **Adaptive Layout** — Bottom navigation on portrait/narrow; navigation rail on wide screens (Compose targets)
-- 🌙 **Material 3 Theming** — Per-platform system bar styling with `SystemAppearance`
-- 🔄 **KMP → SwiftUI Bridge** — Shared ViewModels consumed by native SwiftUI through `FlowWatcher` + `@Published` pattern
+- Complete browser database initialization and storage behavior, and resolve the WebAssembly compilation errors.
+- Add tests for pagination, search timing, error handling, and favorite identity/removal behavior.
+- Persist theme preferences across launches.
+- Connect unfinished UI actions such as the home search shortcut and “See all,” and bring Compose genre filtering in line with iOS.
+- Finish notification integration; the current toggle only updates UI state.
+- Validate complete user journeys on each target and add reproducible CI checks and real app screenshots.
 
----
+Mood-based recommendations and movie playback are not implemented in the current project.
 
-## 🤖 Agentic AI Development
+## Run locally
 
-> This project is a practical exercise in **Agentic AI Development**.
+### Requirements
 
-As an **Android developer**, I used AI agents to:
-
-1. **Learn SwiftUI patterns** — Translating Compose Mental Models (modifiers → SwiftUI modifiers, `LazyColumn` → `List`/`ScrollView`, `collectAsStateWithLifecycle` → `@StateObject` + `FlowWatcher`)
-2. **Build the iOS UI layer** — All SwiftUI views (`HomeView`, `SearchView`, `FavoriteView`, `SettingsView`, `MovieDetailView`) and reusable components (`FeaturedCard`, `PosterCard`, `MovieRow`, `PageIndicator`, `GenreChipRow`) were built iteratively with AI
-3. **Implement the KMP → SwiftUI bridge** — Designed the `ViewModelWrapper` pattern to watch Kotlin `StateFlow` from Swift and expose it as `@Published` properties
-4. **Maintain architectural consistency** — Ensured the SwiftUI layer follows the same MVI pattern (state + actions) as the Compose/Android layer
-
-### Key lessons from agentic development on this project:
-
-- **Context is king** — Providing clear project structure docs (`PROJECT_STRUCTURE.md`) and well-architected Kotlin code helped the AI generate more accurate SwiftUI code
-- **Bridge patterns matter** — The `ViewModelWrapper` pattern emerged from iterative AI-assisted design, bridging two very different reactive systems (Kotlin Flow ↔ SwiftUI `@Published`)
-- **Iterative refinement** — Starting with basic views, then progressively adding animations, accessibility, error states, and polish through multiple agent iterations
-- **Platform idioms over 1:1 translation** — Learning when to use native SwiftUI patterns (like `GeometryReader` for featured cards, `Capsule` chips) vs. trying to replicate Compose patterns literally
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **JDK 11+**
-- **Android Studio** Ladybug or newer with KMP & Compose Multiplatform support
-- **Xcode 15+** (for iOS)
-- **Node.js** (optional; used by Kotlin/JS and Wasm web toolchains)
-
-### Clone
+- JDK 21, as used for the local compilation checks, and the included Gradle wrapper.
+- Android SDK Platform 37. The Android app has a minimum SDK of 24 and targets SDK 36. Set the SDK path through Android Studio or an untracked `local.properties` file.
+- For iOS: macOS, Xcode with an SDK supporting the project's iOS 18.2 deployment target, and an ARM64 simulator or device.
+- Network access for Gradle dependencies and the movie API. The current API client does not configure an API key.
 
 ```bash
-git clone https://github.com/Alimmzdev/CineMood.git
-cd CineMood   # local folder may be named CineMookKmp
+git clone --branch dev https://github.com/Alimmzdev/CineMood.git
+cd CineMood
 ```
 
-### Build & Run
+### Android, desktop, and JavaScript
 
 ```bash
-# Android
+# Android: build a debug APK
+./gradlew :androidApp:assembleDebug
+
+# Android: install on a connected device or running emulator
 ./gradlew :androidApp:installDebug
 
-# Desktop (JVM)
+# Desktop: run the Compose application
 ./gradlew :desktopApp:run
 
-# Web — Wasm (recommended)
-./gradlew :webApp:wasmJsBrowserDevelopmentRun
-
-# Web — JS (broader browser support)
+# JavaScript: start the browser development server
 ./gradlew :webApp:jsBrowserDevelopmentRun
 ```
 
+The JavaScript command is a development entry point; its successful Kotlin compilation does not establish that the browser database works end to end. WebAssembly also has a configured `:webApp:wasmJsBrowserDevelopmentRun` task, but its compilation blocker must be resolved first.
+
 ### iOS
 
-Open `iosApp/iosApp.xcodeproj` in Xcode 15+, then run on a simulator or device.
+Open `iosApp/iosApp.xcodeproj` in Xcode, select the `iosApp` scheme and an ARM64 simulator, and run. For a physical device, configure your own signing team and provisioning settings.
 
-> The iOS target requires the `Shared` framework, which is built automatically by the `:shared` Gradle module (targets `iosArm64`, `iosSimulatorArm64`).
+The Xcode build phase invokes `:shared:embedAndSignAppleFrameworkForXcode` to build and embed the Kotlin `Shared` framework. Its targets are `iosArm64` and `iosSimulatorArm64`.
 
----
+### Reproduce the passing Kotlin compilation checks
 
-## 📄 License
+```bash
+./gradlew :androidApp:compileDebugKotlin :desktopApp:compileKotlin \
+  :webApp:compileKotlinJs :shared:compileKotlinIosSimulatorArm64
+```
 
-This project is released under the [MIT License](LICENSE). Fork, study, and reuse freely — including in commercial apps — as long as you keep the copyright notice and license text.
+Run the combined command on macOS with the iOS toolchain available. It does not run automated tests or compile the SwiftUI application.
 
-Third-party libraries and the [moviesapi.ir](https://moviesapi.ir) API remain subject to their own terms.
+## AI-assisted development
 
----
+I used AI-assisted development to build and iterate on the native SwiftUI layer, including views, navigation, theming, and Kotlin ViewModel wrappers. This project is also an exercise in learning an unfamiliar platform while applying architecture patterns from Android development. The iOS implementation should be understood in that context when reviewing my experience.
 
-<div align="center">
+## Author
 
-**Built with ❤️ by an Android developer, exploring SwiftUI through Agentic AI Development**
+Built by [Alimmzdev](https://github.com/Alimmzdev). I am interested in Android and Kotlin Multiplatform opportunities and welcome technical feedback on the project.
 
-</div>
+## License
+
+Source code is available under the [MIT License](LICENSE). Third-party dependencies and movie data retain their respective licenses and terms.

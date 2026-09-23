@@ -22,11 +22,11 @@ dependencies {
 }
 
 android {
-    namespace = "tech.nullexdev.cinemood"
+    namespace = "dev.alimmz.cinemood"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "tech.nullexdev.cinemood"
+        applicationId = "dev.alimmz.cinemood"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

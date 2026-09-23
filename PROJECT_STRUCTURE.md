@@ -3,7 +3,7 @@
 > **CineMood** — *Discover movies by your mood*
 > A Kotlin Multiplatform app for browsing Iranian cinema, built with Compose Multiplatform.
 
-Gradle root project: **CineMookKmp** · Base package: `tech.nullexdev.cinemood`
+Gradle root project: **CineMookKmp** · Base package: `dev.alimmz.cinemood`
 
 ---
 
@@ -109,7 +109,7 @@ or wire the SwiftUI host (iOS).
 
 ### 4.2 `shared` — application shell
 
-Path: `shared/src/commonMain/kotlin/tech/nullexdev/cinemood/`
+Path: `shared/src/commonMain/kotlin/dev/alimmz/cinemood/`
 
 | File | Purpose |
 |------|---------|
@@ -291,7 +291,7 @@ Shared framework for iOS is produced by the `:shared` module as a static framewo
 - **Source-set layout:** `commonMain` + per-target `actual`s (`androidMain`, `iosMain`,
   `jvmMain`, `jsMain`, `wasmJsMain`, `webMain`). Tests use `commonTest`, `androidHostTest`,
   `androidDeviceTest`.
-- **Package root:** `tech.nullexdev.cinemood.*` (a few legacy files still use
+- **Package root:** `dev.alimmz.cinemood.*` (a few legacy files still use
   `com.alimmzdev.cinemood.*`).
 - **Clean layering:** `domain` never depends on `data`/UI; `data` implements `domain` interfaces;
   features depend on `domain` + `presentation` only.

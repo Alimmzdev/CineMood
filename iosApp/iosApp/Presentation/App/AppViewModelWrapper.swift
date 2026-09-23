@@ -11,7 +11,7 @@ final class AppViewModelWrapper: ObservableObject {
     let viewModel: AppViewModel = KoinHelper.shared.getAppViewModel()
 
     @Published var themeMode: ThemeMode = .system
-
+ 
     private var watcher: FlowWatcher<AppUiState>?
 
     init() {
