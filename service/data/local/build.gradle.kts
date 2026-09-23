@@ -11,7 +11,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "tech.nullexdev.cinemood.service.data.local"
+        namespace = "dev.alimmz.cinemood.service.data.local"
         compileSdk = 37
         minSdk = 24
     }
@@ -96,7 +96,7 @@ room {
 sqldelight {
     databases {
         create("CineMoodDatabase") {
-            packageName.set("tech.nullexdev.cinemood.service.data.local.db")
+            packageName.set("dev.alimmz.cinemood.service.data.local.db")
             generateAsync.set(true)
         }
     }

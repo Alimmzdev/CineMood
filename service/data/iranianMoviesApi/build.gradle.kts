@@ -13,7 +13,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "tech.nullexdev.cinemood.service.data.iranianmoviesapi"
+        namespace = "dev.alimmz.cinemood.service.data.iranianmoviesapi"
         compileSdk = 36
         minSdk = 24
 

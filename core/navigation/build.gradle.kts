@@ -13,7 +13,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "tech.nullexdev.cinemood.core.navigation"
+        namespace = "dev.alimmz.cinemood.core.navigation"
         compileSdk = 36
         minSdk = 24
 

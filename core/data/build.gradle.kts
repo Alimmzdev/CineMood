@@ -9,7 +9,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "tech.nullexdev.cinemood.core.data"
+        namespace = "dev.alimmz.cinemood.core.data"
         compileSdk = 37
         minSdk = 24
 
