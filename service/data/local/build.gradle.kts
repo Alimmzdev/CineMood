@@ -10,6 +10,11 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        // Room's database constructor uses an expect object and generated actual objects.
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
     android {
         namespace = "dev.alimmz.cinemood.service.data.local"
         compileSdk = 37
