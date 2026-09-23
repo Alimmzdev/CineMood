@@ -16,6 +16,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
+            binaryOption("bundleId", "tech.nullexdev.cinemood.shared")
             isStatic = true
             export(projects.feature.home)
             export(projects.feature.search)

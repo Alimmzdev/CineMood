@@ -30,6 +30,8 @@ kotlin {
         binaries.executable()
     }
 
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
         commonMain {
             dependencies {
