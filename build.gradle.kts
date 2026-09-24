@@ -15,11 +15,9 @@ plugins {
     alias(libs.plugins.sqldelight) apply false
 }
 
-val wasmYarnLockPath: String = "${rootProject.layout.buildDirectory.get().asFile.absolutePath}/wasm/yarn.lock"
-
 tasks.matching { task -> task.name == "kotlinWasmStoreYarnLock" }.configureEach {
+    val wasmYarnLockFile = rootProject.layout.buildDirectory.file("wasm/yarn.lock").get().asFile
     doFirst {
-        val wasmYarnLockFile = java.io.File(wasmYarnLockPath)
         if (!wasmYarnLockFile.parentFile.exists()) {
             wasmYarnLockFile.parentFile.mkdirs()
         }
