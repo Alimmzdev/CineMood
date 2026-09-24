@@ -38,7 +38,7 @@ class FavoriteViewModel(
                         copy(
                             isLoading = false,
                             favorites = likedVideos.map { FavoriteMovieItem(
-                                id = it.id,
+                                id = it.tmdbId,
                                 title = it.title,
                                 poster = it.posterUrl,
                                 genres = persistentListOf()
