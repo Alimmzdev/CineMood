@@ -31,7 +31,13 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                }
+            }
+        }
         binaries.executable()
     }
 
@@ -83,6 +89,11 @@ kotlin {
                 implementation(libs.sqldelight.coroutines.extensions)
                 implementation(libs.sqldelight.web.worker.driver.wasm.js)
             }
+        }
+
+        wasmJsTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${libs.versions.kotlinx.coroutines.get()}")
         }
     }
 }
