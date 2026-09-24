@@ -19,6 +19,10 @@ kotlin {
     }
 
     sourceSets {
+        webMain.dependencies {
+            implementation(devNpm("copy-webpack-plugin", "13.0.1"))
+        }
+
         commonMain.dependencies {
             implementation(projects.shared)
 
