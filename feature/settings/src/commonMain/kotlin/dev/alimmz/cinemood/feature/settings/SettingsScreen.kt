@@ -292,12 +292,12 @@ fun ProfileSection() {
                 Spacer(Modifier.height(16.dp))
 
                 Text(
-                    "NullExDev",
+                    "Alimmzdev",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
-                    "nullexdev@example.com",
+                    "Ali.Mohammadzadeh.dev@outlook.com",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
