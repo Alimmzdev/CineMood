@@ -8,7 +8,9 @@ An Android-focused portfolio project exploring how modular architecture, reactiv
 
 **Work in progress · Android · iOS · Desktop · Web**
 
-[Website](https://cinemood.alimmz.dev) · [Screenshots](#screenshots) · [Explore the code](#code-tour) · [Current features](#current-features) · [Run locally](#run-locally) · [Development status](#development-status)
+**🌐 Live website: [cinemood.alimmz.dev](https://cinemood.alimmz.dev)**
+
+[Screenshots](#screenshots) · [Explore the code](#code-tour) · [Current features](#current-features) · [Run locally](#run-locally) · [Development status](#development-status)
 
 </div>
 
