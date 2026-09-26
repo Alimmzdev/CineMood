@@ -72,7 +72,7 @@ struct SettingsView: View {
                 Divider().padding(.leading, 52)
                 AboutRow(icon: "🔖", title: "Version", value: appVersion)
                 Divider().padding(.leading, 52)
-                AboutRow(icon: "👨‍💻", title: "Developer", value: "Nullexdev")
+                AboutRow(icon: "👨‍💻", title: "Developer", value: "Alimmzdev")
             }
         }
     }
