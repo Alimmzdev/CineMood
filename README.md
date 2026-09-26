@@ -22,9 +22,9 @@ An Android-focused portfolio project exploring how modular architecture, reactiv
 
 ### Native iOS · SwiftUI
 
-| Home | Search | Favorites | Settings |
-| :---: | :---: | :---: | :---: |
-| <img src="screenshots/Home-iOS.PNG" alt="iOS home screen" width="220"> | <img src="screenshots/Search-iOS.PNG" alt="iOS search screen" width="220"> | <img src="screenshots/Favorite-iOS.PNG" alt="iOS favorites screen" width="220"> | <img src="screenshots/Setting-iOS.PNG" alt="iOS settings screen" width="220"> |
+| Home | Movie details | Search | Favorites | Settings |
+| :---: | :---: | :---: | :---: | :---: |
+| <img src="screenshots/Home-iOS.PNG" alt="iOS home screen" width="220"> | <img src="screenshots/Movie-details-iOS.PNG" alt="iOS movie details screen" width="220"> | <img src="screenshots/Search-iOS.PNG" alt="iOS search screen" width="220"> | <img src="screenshots/Favorite-iOS.PNG" alt="iOS favorites screen" width="220"> | <img src="screenshots/Setting-iOS.PNG" alt="iOS settings screen" width="220"> |
 
 ## About the project
 
