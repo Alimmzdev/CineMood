@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cinemood.alimmz.dev/sitemap.xml
