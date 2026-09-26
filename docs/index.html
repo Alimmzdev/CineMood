@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CineMood — Your next great movie starts here.</title>
+  <meta name="description" content="Discover movies, explore the details, and keep your favorites close. CineMood is an open-source Kotlin Multiplatform project with Compose and native SwiftUI interfaces.">
+  <meta name="theme-color" content="#f5f1e9">
+  <meta property="og:title" content="CineMood — Your next great movie starts here.">
+  <meta property="og:description" content="A little discovery. A lot of cinema. Explore the open-source movie discovery app.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cinemood.alimmz.dev/">
+  <meta property="og:image" content="https://cinemood.alimmz.dev/assets/home-compose.jpg">
+  <link rel="canonical" href="https://cinemood.alimmz.dev/">
+  <link rel="icon" href="assets/icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="wrap nav">
+    <a class="brand" href="#" aria-label="CineMood home"><img src="assets/icon.png" width="38" height="38" alt="">CineMood<span class="brand-dot">.</span></a>
+    <nav aria-label="Main navigation"><a href="#features">The experience</a><a href="#screens">Screenshots</a><a class="nav-source" href="https://github.com/Alimmzdev/CineMood">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="main">
+    <section class="wrap hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot"></span> OPEN SOURCE · VERSION 0.1.0</p>
+        <h1 id="hero-title">Your next<br>great movie<br>starts <em>here.</em></h1>
+        <p class="intro">For the films you haven’t found.<br>And the ones you’ll never forget.</p>
+        <p class="hero-description">Discover your next watch, get lost in the details, and build a collection of favorites. Meet CineMood.</p>
+        <div class="actions"><a class="button primary" href="#screens">Take a look <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/Alimmzdev/CineMood">Explore the code <span aria-hidden="true">→</span></a></div>
+        <p class="small-note">An independent project by <a href="https://github.com/Alimmzdev">Ali Mohammadzadeh</a></p>
+      </div>
+      <div class="hero-art">
+        <div class="orbit" aria-hidden="true"></div>
+        <div class="hero-label label-top">A LITTLE DISCOVERY.<br>A LOT OF CINEMA.</div>
+        <img class="phone phone-back" src="assets/movie-detail-compose.jpg" width="640" height="1436" alt="CineMood movie details with a poster and synopsis">
+        <img class="phone phone-front" src="assets/home-compose.jpg" width="640" height="1436" alt="CineMood Discover screen with featured movies and a movie catalog" fetchpriority="high">
+        <div class="hero-label label-bottom"><span aria-hidden="true">♥</span> Keep the good ones close.</div>
+      </div>
+    </section>
+    <div class="platform-strip"><div class="wrap"><span>ONE PROJECT. DIFFERENT SCREENS.</span><p>Android <b>✦</b> iOS <b>✦</b> Desktop <b>✦</b> Web</p><span>BUILT WITH KOTLIN MULTIPLATFORM</span></div></div>
+    <section id="features" class="wrap section">
+      <div class="section-heading"><p class="eyebrow">01 / THE EXPERIENCE</p><h2>A home for your<br><em>love of movies.</em></h2><p>From a first glance to a new favorite.<br>Make a little room for movie night.</p></div>
+      <div class="feature-grid">
+        <article><span class="feature-icon" aria-hidden="true">✦</span><span class="feature-number">01</span><h3>Find your next watch.</h3><p>Browse a visual movie catalog and search for a title that’s on your mind. Something good is waiting.</p></article>
+        <article><span class="feature-icon" aria-hidden="true">↗</span><span class="feature-number">02</span><h3>Go beyond the poster.</h3><p>Explore the synopsis and movie details before deciding what deserves a place on your list.</p></article>
+        <article><span class="feature-icon" aria-hidden="true">♡</span><span class="feature-number">03</span><h3>Save the ones you love.</h3><p>Keep your favorite movies together in a personal collection, ready when inspiration strikes.</p></article>
+      </div>
+    </section>
+    <section id="screens" class="screens-section section">
+      <div class="wrap">
+        <div class="screens-heading"><div><p class="eyebrow">02 / IN THE FRAME</p><h2>A closer <em>look.</em></h2></div><div class="switcher" role="group" aria-label="Screenshot platform"><button type="button" aria-pressed="true" data-platform="compose">Compose</button><button type="button" aria-pressed="false" data-platform="ios">Native iOS</button></div></div>
+        <p class="gallery-description" id="gallery-description">The shared Compose interface, from discovery to your saved collection.</p>
+        <div class="gallery" id="gallery" aria-label="Compose screenshots">
+          <figure><a href="assets/home-compose.jpg"><img src="assets/home-compose.jpg" alt="Compose home screen" width="640" height="1436" loading="lazy"></a><figcaption><span>01</span> Discover</figcaption></figure>
+          <figure><a href="assets/movie-detail-compose.jpg"><img src="assets/movie-detail-compose.jpg" alt="Compose movie details screen" width="640" height="1436" loading="lazy"></a><figcaption><span>02</span> Movie details</figcaption></figure>
+          <figure><a href="assets/favorite-list-compose.jpg"><img src="assets/favorite-list-compose.jpg" alt="Compose favorites list" width="640" height="1436" loading="lazy"></a><figcaption><span>03</span> Favorites</figcaption></figure>
+          <figure><a href="assets/setting-compose.jpg"><img src="assets/setting-compose.jpg" alt="Compose settings screen" width="640" height="1436" loading="lazy"></a><figcaption><span>04</span> Make it yours</figcaption></figure>
+        </div>
+        <p class="gallery-hint">Select a screenshot to see it full size. <span>Scroll to explore →</span></p>
+        <noscript><p>View the native iOS screenshots in the <a href="https://github.com/Alimmzdev/CineMood#screenshots">project README</a>.</p></noscript>
+      </div>
+    </section>
+    <section class="wrap section project" id="project">
+      <div><p class="eyebrow">03 / BEHIND THE SCENES</p><h2>Made with curiosity.<br><em>Built in the open.</em></h2></div>
+      <div class="project-copy"><p>CineMood is an independent, open-source exploration of movie discovery across platforms. Shared Kotlin logic powers Compose interfaces on Android, desktop, and web, alongside a native SwiftUI experience on iOS.</p><p>Version 0.1.0 is an early milestone. The project is actively evolving, and the repository is the place to follow progress, build the app, or contribute.</p><div class="tech-tags"><span>Kotlin Multiplatform</span><span>Compose</span><span>SwiftUI</span></div><a class="text-link" href="https://github.com/Alimmzdev/CineMood#run-locally">Build it yourself <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section class="wrap closing"><p class="eyebrow">THE NEXT CHAPTER IS OPEN.</p><h2>Good movies.<br><em>Better discoveries.</em></h2><div class="actions"><a class="button primary" href="https://github.com/Alimmzdev/CineMood">Find CineMood on GitHub <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/Alimmzdev/CineMood/tree/0.1.0">Explore version 0.1.0 →</a></div></section>
+  </main>
+  <footer class="wrap footer"><a class="brand" href="#">CineMood<span class="brand-dot">.</span></a><p>Made by <a href="https://github.com/Alimmzdev">Ali Mohammadzadeh</a></p><div><a href="https://github.com/Alimmzdev/CineMood/blob/main/LICENSE">MIT License</a><a href="https://github.com/Alimmzdev/CineMood/issues">Feedback ↗</a></div></footer>
+</body>
+</html>
