@@ -8,9 +8,23 @@ An Android-focused portfolio project exploring how modular architecture, reactiv
 
 **Work in progress · Android · iOS · Desktop · Web**
 
-[Explore the code](#code-tour) · [Current features](#current-features) · [Run locally](#run-locally) · [Development status](#development-status)
+[Screenshots](#screenshots) · [Explore the code](#code-tour) · [Current features](#current-features) · [Run locally](#run-locally) · [Development status](#development-status)
 
 </div>
+
+## Screenshots
+
+### Compose Multiplatform
+
+| Home | Movie details | Favorites | Settings |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/Home-Compose.png" alt="Compose home screen" width="220"> | <img src="screenshots/Movie-detail-Compose.png" alt="Compose movie details screen" width="220"> | <img src="screenshots/Favorite-list-Compose.png" alt="Compose favorites list screen" width="220"> | <img src="screenshots/Setting-Compose.png" alt="Compose settings screen" width="220"> |
+
+### Native iOS · SwiftUI
+
+| Home | Search | Favorites | Settings |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/Home-iOS.PNG" alt="iOS home screen" width="220"> | <img src="screenshots/Search-iOS.PNG" alt="iOS search screen" width="220"> | <img src="screenshots/Favorite-iOS.PNG" alt="iOS favorites screen" width="220"> | <img src="screenshots/Setting-iOS.PNG" alt="iOS settings screen" width="220"> |
 
 ## About the project
 
@@ -132,7 +146,7 @@ The repository currently contains starter/example tests. Meaningful ViewModel, r
 - Persist theme preferences across launches.
 - Connect unfinished UI actions such as the home search shortcut and “See all,” and bring Compose genre filtering in line with iOS.
 - Finish notification integration; the current toggle only updates UI state.
-- Validate complete user journeys on each target and add reproducible CI checks and real app screenshots.
+- Validate complete user journeys on each target and add reproducible CI checks.
 
 Mood-based recommendations and movie playback are not implemented in the current project.
 
